@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d0d0d">
+<title>Aluwal · Sistema</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230d0d0d'/%3E%3Ctext x='32' y='42' font-family='sans-serif' font-size='28' font-weight='700' fill='%23c9a96e' text-anchor='middle'%3EAW%3C/text%3E%3C/svg%3E">
+<style>
+  :root{ --gold:#c9a96e; --bg:#0d0d0d; --panel:#161616; --border:#2a2a2a; --text:#eee; --dim:#999; }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;min-height:100vh;}
+  .wrap{max-width:900px;margin:0 auto;padding:44px 20px 60px;}
+  h1{font-size:15px;letter-spacing:4px;text-transform:uppercase;margin:0 0 6px;font-weight:600;}
+  .sub{color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:34px;}
+  .flujo{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 30px;font-size:12.5px;color:var(--dim);}
+  .flujo b{color:var(--text);font-weight:600;}
+  .flujo .sep{color:var(--gold);}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  a.card{display:block;background:var(--panel);border:1px solid var(--border);padding:22px 22px 20px;text-decoration:none;color:inherit;transition:border-color .15s,transform .15s;}
+  a.card:hover{border-color:var(--gold);transform:translateY(-2px);}
+  .n{color:var(--gold);font-size:11px;letter-spacing:2px;margin-bottom:10px;}
+  .t{font-size:16px;font-weight:600;letter-spacing:.5px;margin-bottom:8px;}
+  .d{font-size:13px;color:var(--dim);line-height:1.55;}
+  .aparte{margin-top:26px;padding-top:18px;border-top:1px solid var(--border);}
+  .aparte .lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:10px;}
+  a.mini{display:inline-block;font-size:13px;color:var(--text);text-decoration:none;border:1px solid var(--border);padding:10px 14px;margin:0 8px 8px 0;}
+  a.mini:hover{border-color:var(--gold);color:var(--gold);}
+  .pie{margin-top:34px;font-size:11.5px;color:#666;line-height:1.7;}
+  @media(max-width:640px){ .grid{grid-template-columns:1fr;} .wrap{padding:30px 16px 50px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Aluwal · Sistema</h1>
+  <div class="sub">Presupuestos, ventas y obra en un solo lugar</div>
+
+  <div class="flujo">
+    <b>Presupuesto</b><span class="sep">→</span><b>Vendido</b><span class="sep">→</span><b>Ventas</b> y <b>Obra</b>
+    <span style="flex-basis:100%;height:0;"></span>
+    <span>Cada presupuesto tiene un número (B-0001, B-0002…) y ese mismo número lo siguen todas las apps. Lo que se cambia en una se ve en las otras.</span>
+  </div>
+
+  <div class="grid">
+    <a class="card" href="presupuestador/">
+      <div class="n">1</div>
+      <div class="t">Presupuestador interno</div>
+      <div class="d">Armar presupuestos, ventanas a medida y marcar un presupuesto como vendido.</div>
+    </a>
+    <a class="card" href="obra/">
+      <div class="n">2</div>
+      <div class="t">Obra</div>
+      <div class="d">Vidrios, cortes de perfiles y optimizador de barras de cada venta. También obras a mano.</div>
+    </a>
+    <a class="card" href="ventas/">
+      <div class="n">3</div>
+      <div class="t">Control de ventas</div>
+      <div class="d">Cobros, medidas, producción y entrega. Las ventas llegan solas desde los presupuestos vendidos.</div>
+    </a>
+    <a class="card" href="online/">
+      <div class="n">4</div>
+      <div class="t">Presupuestador online</div>
+      <div class="d">El que usan los clientes desde la web. Cada presupuesto queda guardado con su número.</div>
+    </a>
+  </div>
+
+  <div class="aparte">
+    <div class="lbl">Aparte</div>
+    <a class="mini" href="https://aluwalaberturas.com/Calculadora-cuotas/">Calculadora de cuotas y financiación</a>
+  </div>
+
+  <div class="pie">Tip: en el celular, abrí esta página y tocá “Agregar a pantalla de inicio” para tenerla como una app.<br>En cada app hay un botón ⌂ abajo a la izquierda para volver acá.</div>
+</div>
+</body>
+</html>

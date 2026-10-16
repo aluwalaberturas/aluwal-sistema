@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aluwal · Obra: vidrios y cortes</title>
+<style>
+  :root{
+    --bg:#0d0d0d; --panel:#161616; --panel2:#1d1d1d; --border:#2a2a2a;
+    --text:#eee; --muted:#999; --accent:#c9a96e; --accent2:#2ecf7a;
+    --warn:#e0a83b; --danger:#e05353;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);}
+  header{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  header h1{font-size:18px;margin:0;font-weight:600;}
+  header .sub{color:var(--muted);font-size:12.5px;}
+  nav{display:flex;gap:8px;padding:14px 24px 0;flex-wrap:wrap;}
+  nav button{background:var(--panel);border:1px solid var(--border);color:var(--muted);padding:9px 16px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13.5px;font-weight:500;}
+  nav button.active{background:var(--panel2);color:var(--text);border-color:var(--accent);}
+  main{padding:20px 24px 60px;max-width:1200px;margin:0 auto;}
+  .tab{display:none;}
+  .tab.active{display:block;}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px;}
+  .row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;}
+  .field{display:flex;flex-direction:column;gap:4px;min-width:140px;}
+  .field label{font-size:12px;color:var(--muted);}
+  select,input[type=number],input[type=text]{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:9px 10px;border-radius:7px;font-size:14px;}
+  input[type=number]{width:110px;}
+  button.primary{background:var(--accent);color:#0d0d0d;border:none;padding:10px 18px;border-radius:7px;cursor:pointer;font-size:14px;font-weight:600;}
+  button.primary:hover{filter:brightness(1.1);}
+  button.ghost{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:7px;cursor:pointer;font-size:13.5px;}
+  button.danger{background:transparent;border:1px solid var(--danger);color:var(--danger);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:12.5px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);}
+  th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;}
+  tr:hover td{background:#1c1c1c;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+  .badge.modena{background:#2a3f5f;color:#8ec2ff;}
+  .badge.actual{background:#3f2a5f;color:#c98eff;}
+  .badge.a30{background:#2a5f3f;color:#8effc2;}
+  .badge.a40{background:#5f2a2a;color:#ff8e8e;}
+  .badge.massr60{background:#5f3f2a;color:#ffb98e;}
+  .badge.warn{background:#4a3a1a;color:var(--warn);}
+  .muted{color:var(--muted);}
+  .pill{background:var(--panel2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12.5px;}
+  .flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:6px;}
+  .warn-box{background:#241e10;border:1px solid #4a3a1a;color:#e8c98a;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;}
+  .bar-diagram{display:flex;height:26px;border-radius:4px;overflow:hidden;border:1px solid var(--border);margin:6px 0;}
+  .bar-seg{display:flex;align-items:center;justify-content:center;font-size:10.5px;color:#fff;border-right:1px solid rgba(0,0,0,.35);white-space:nowrap;overflow:hidden;}
+  .bar-waste{background:repeating-linear-gradient(45deg,#2a3644,#2a3644 6px,#232d3a 6px,#232d3a 12px);color:var(--muted);}
+  .stat{font-size:22px;font-weight:700;}
+  .stat-label{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:16px;}
+  hr.sep{border:none;border-top:1px solid var(--border);margin:16px 0;}
+  a.reset{color:var(--accent);font-size:12.5px;cursor:pointer;}
+  ::placeholder{color:#5a6673;}
+  .swatch{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:middle;border:1px solid rgba(255,255,255,.25);}
+  .v-badge{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;padding:0 7px;border-radius:6px;font-size:11.5px;font-weight:700;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.35);}
+  .legend-item{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--border);border-radius:20px;padding:5px 12px 5px 8px;font-size:12.5px;}
+  .check-label{display:flex;gap:6px;align-items:center;font-size:13.5px;font-weight:400;color:var(--text);cursor:pointer;}
+  .check-label input{accent-color:var(--accent);width:15px;height:15px;cursor:pointer;}
+  .badge.stock-retazo{background:#1a4a3a;color:#7fe0b8;}
+  .badge.stock-barra{background:#1a3a4a;color:#7fc4e0;}
+  .badge.stock-nueva{background:#3a3020;color:#e0c07f;}
+  .chip{display:inline-flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:3px 5px 3px 10px;font-size:12px;margin:2px 3px 2px 0;}
+  .chip button{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:0 4px;}
+  .chip button:hover{color:var(--danger);}
+  button.print-btn{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:7px;cursor:pointer;font-size:13.5px;font-weight:500;}
+  button.print-btn:hover{border-color:var(--accent);}
+  .print-header{display:none;}
+  #etiquetasPrint{display:none;}
+  .etiqueta-row{padding:14px 6px;border-bottom:1px dashed #999;font-size:17px;break-inside:avoid;}
+  .etiqueta-row b{font-weight:700;}
+  .etiqueta-dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+  #vidriosPrint{display:none;color:#000;background:#fff;}
+  .vp-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #b8925a;padding-bottom:14px;margin-bottom:20px;}
+  .vp-brand{font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase;}
+  .vp-brand small{display:block;font-size:11px;font-weight:400;letter-spacing:2px;color:#666;margin-top:4px;}
+  .vp-meta{text-align:right;font-size:11px;color:#666;line-height:1.5;}
+  table.vp-grid{width:100%;border-collapse:collapse;font-size:11px;}
+  .vp-grid th,.vp-grid td{border:1px solid #999;padding:7px 8px;color:#000;text-align:left;}
+  .vp-grid thead th{background:#efe6d8;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;}
+  .vp-grid tbody tr:nth-child(even) td{background:#f7f5f1;}
+  .vp-page2{break-before:page;page-break-before:always;}
+  .vp-page2 .vp-grid{font-size:14px;}
+  td.vidrio{color:var(--accent);font-weight:600;white-space:nowrap;}
+  @media print{
+    :root{ --bg:#fff; --panel:#fff; --panel2:#f4f4f4; --border:#ccc; --text:#000; --muted:#555; }
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important;}
+    body{background:#fff;}
+    .no-print{display:none !important;}
+    .print-header{display:block;margin-bottom:16px;}
+    .print-header h2{margin:0 0 4px;}
+    .print-header .sub{color:#555;font-size:12.5px;}
+    .card{box-shadow:none;break-inside:avoid;page-break-inside:avoid;}
+    main{max-width:none;padding:0;}
+    .pagebreak{break-before:page;page-break-before:always;}
+    .barra-row{break-inside:avoid;page-break-inside:avoid;}
+    .grupo-card{break-inside:avoid;page-break-inside:avoid;}
+    .grupo-header{break-after:avoid;page-break-after:avoid;}
+    body.modo-etiquetas main{display:none !important;}
+    body.modo-etiquetas header{display:none !important;}
+    body.modo-etiquetas .print-header{display:none !important;}
+    body.modo-etiquetas #etiquetasPrint{display:grid !important;grid-template-columns:1fr 1fr;column-gap:18px;}
+    body.modo-vidrios main, body.modo-vidrios header, body.modo-vidrios .print-header{display:none !important;}
+    body.modo-vidrios #vidriosPrint{display:block !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="print-header">
+  <h2>Aluwal Aberturas — Obra</h2>
+  <div class="sub" id="printDate"></div>
+  <div class="sub" id="printObra" style="font-weight:600;margin-top:4px;"></div>
+</div>
+
+<div id="etiquetasPrint"></div>
+<div id="vidriosPrint"></div>
+
+<header>
+  <div>
+    <h1>Obra — vidrios y cortes · Aluwal</h1>
+    <div class="sub">Cargás cada abertura una sola vez: sale el vidrio, los cortes de perfiles y el optimizador de barras</div>
+  </div>
+  <div class="hdr-actions" style="display:flex;gap:10px;align-items:center;">
+    <div class="pill" id="mlPill">ML total obra: 0.00 mts</div>
+    <div class="pill" id="nubePill">☁ —</div>
+    <div class="pill" id="stockPill">Barra estándar: 6000 mm</div>
+    <button class="print-btn no-print" onclick="abrirPres()">📥 Traer presupuesto</button>
+    <button class="print-btn no-print" onclick="imprimirEtiquetas()">🏷️ Imprimir etiquetas</button>
+    <button class="print-btn no-print" onclick="imprimirVidrios()">🪟 Imprimir vidrios</button>
+    <button class="print-btn no-print" onclick="window.print()">🖨️ Imprimir esta vista</button>
+  </div>
+</header>
+
+<div class="no-print obra-top" style="padding:14px 24px 0;max-width:1200px;margin:0 auto;">
+  <div class="card" style="margin-bottom:0;">
+    <div class="row">
+      <div class="field" style="min-width:220px;">
+        <label>Obra</label>
+        <input type="text" id="obraNombre" placeholder="ej: Casa Pérez" oninput="actualizarObra()">
+      </div>
+      <div class="field" style="min-width:300px;flex:1;">
+        <label>Dirección de obra</label>
+        <input type="text" id="obraDireccion" placeholder="ej: Av. Siempreviva 742, Pilar" oninput="actualizarObra()">
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button class="ghost" onclick="guardarObraActual()">💾 Guardar esta obra</button>
+      </div>
+    </div>
+    <hr class="sep" style="margin:12px 0;">
+    <div class="flex-between" style="cursor:pointer;" onclick="toggleObrasGuardadas()">
+      <span class="muted" style="font-size:12.5px;" id="obrasGuardadasToggleLabel">▸ Obras guardadas</span>
+    </div>
+    <div id="obrasGuardadasPanel" style="display:none;margin-top:10px;">
+      <input type="text" id="obrasGuardadasBuscar" placeholder="🔍 Buscar obra por nombre..." oninput="renderObrasGuardadas()" style="width:100%;max-width:320px;margin-bottom:10px;">
+      <div id="obrasGuardadasBox" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+    </div>
+  </div>
+</div>
+
+<nav class="no-print">
+  <button class="active" data-tab="pres">1 · Presupuestos</button>
+  <button data-tab="vidrios">2 · Vidrios</button>
+  <button data-tab="lista">3 · Lista de corte <span id="listaCount" class="muted"></span></button>
+  <button data-tab="optim">4 · Optimizar barras</button>
+  <button data-tab="calc" title="Cargar una abertura suelta, sin presupuesto">＋ Abertura a mano</button>
+</nav>
+
+<main>
+
+  <!-- TAB 1: OBRAS (inicio) -->
+  <div class="tab active" id="tab-pres">
+    <div class="card">
+      <div class="flex-between" style="margin-bottom:4px;">
+        <h3 style="margin:0;">Obras</h3>
+        <div class="muted" style="font-size:13px;" id="presActual"></div>
+      </div>
+      <div class="note" style="margin:0 0 14px;">Todo lo que cargues se guarda solo y lo ve cualquiera que abra la app.</div>
+      <div class="flex-between" style="margin-bottom:8px;">
+        <h4 style="margin:0;">🏷️ Ventas <span class="muted" style="font-weight:400;font-size:12.5px;">(presupuestos vendidos)</span></h4>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <label class="check-label"><input type="checkbox" id="presTodos" onchange="renderPres()"> mostrar también no vendidos</label>
+          <div class="field" style="min-width:0;"><select id="presMaterial" title="Material de los perfiles"><option value="virgen">Material: Virgen</option><option value="reciclado">Material: Reciclado</option><option value="tocho">Material: Tocho</option></select></div>
+          <button class="ghost" onclick="cargarPres()">↻ Actualizar</button>
+        </div>
+      </div>
+      <input type="text" id="presBuscar" placeholder="Buscar por número o cliente…" oninput="renderPres()" style="width:100%;max-width:340px;margin-bottom:10px;">
+      <div id="presTabla"></div>
+      <div class="note">"Cargar a la obra" trae las aberturas del presupuesto (línea, tipo, medidas, color y opcionales) y calcula vidrios y cortes. Después queda guardada: la próxima vez la abrís con "Abrir".</div>
+    </div>
+    <div class="card">
+      <div class="flex-between" style="margin-bottom:8px;">
+        <h4 style="margin:0;">✏️ Obras a mano <span class="muted" style="font-weight:400;font-size:12.5px;">(sin presupuesto)</span></h4>
+        <button class="primary" onclick="nuevaObraAMano()">＋ Nueva obra a mano</button>
+      </div>
+      <div id="manoTabla"></div>
+    </div>
+  </div>
+
+  <!-- TAB: ABERTURA A MANO -->
+  <div class="tab" id="tab-calc">
+    <div class="card no-print">
+      <div class="row" style="margin-bottom:12px;">
+        <div class="field"><label>ID (V1, V2, cocina…)</label><input type="text" id="idVentana" placeholder="V1" style="width:150px;"></div>
+        <div class="field"><label>Piso</label><input type="text" id="piso" placeholder="PB, 1, 2…" style="width:110px;"></div>
+        <div class="field"><label>Lado</label><select id="lado"><option value="Frente">Frente</option><option value="Contrafrente">Contrafrente</option></select></div>
+        <div class="field"><label>Composición de vidrio</label>
+          <select id="composicion"><option value="4/9/4">4/9/4</option><option value="4/12/4">4/12/4</option><option value="4/6/3+3">4/6/3+3</option></select>
+        </div>
+        <div class="field" style="flex:1;min-width:220px;"><label>Observación</label><input type="text" id="observacion" placeholder="Notas adicionales…" style="width:100%;"></div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Línea</label>
+          <select id="linea">
+            <option value="modena">Modena (Aluar)</option>
+            <option value="a30">A30 New (Aluar)</option>
+            <option value="a40">A40 (Aluar)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tipo de abertura</label>
+          <select id="tipo"></select>
+        </div>
+        <div class="field">
+          <label>Color / terminación</label>
+          <select id="colorPerfil">
+            <option value="blanco">Blanco</option>
+            <option value="negro">Negro</option>
+            <option value="anodizado">Anodizado</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Material</label>
+          <select id="materialPerfil">
+            <option value="virgen">Virgen</option>
+            <option value="reciclado">Reciclado</option>
+            <option value="tocho">Tocho</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Ancho total A (mm)</label>
+          <input type="number" id="ancho" placeholder="ej: 1200">
+        </div>
+        <div class="field">
+          <label>Alto total H (mm)</label>
+          <input type="number" id="alto" placeholder="ej: 1000">
+        </div>
+        <div class="field">
+          <label>Cantidad de aberturas iguales</label>
+          <input type="number" id="cantAberturas" value="1" min="1">
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="primary" onclick="calcular()">Calcular corte</button>
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px;">
+        <div class="field">
+          <label>Incluir en el corte</label>
+          <div style="display:flex;gap:16px;align-items:center;padding-top:4px;">
+            <label class="check-label"><input type="checkbox" id="chkPremarco" checked> Premarco</label>
+            <label class="check-label"><input type="checkbox" id="chkTapaPremarco" checked> Tapa premarco / contramarco</label>
+            <label class="check-label"><input type="checkbox" id="chkMosquitero" checked> Mosquitero</label>
+          </div>
+        </div>
+      </div>
+      <div class="note" id="tipoNote"></div>
+    </div>
+
+    <div class="card" id="resultCard" style="display:none;">
+      <div class="flex-between">
+        <h3 style="margin:0;" id="resultTitle"></h3>
+        <div class="no-print" style="display:flex;gap:8px;align-items:center;">
+          <button class="primary" onclick="agregarAOrden()">+ Agregar a la obra</button>
+        </div>
+      </div>
+      <div class="note" style="margin-top:-4px;">Si dejás el ID vacío, se numera automático (V1, V2...).</div>
+      <div id="vidrioPreview" style="margin:10px 0 4px;font-size:14px;"></div>
+      <table>
+        <thead><tr><th>Perfil</th><th>Descripción</th><th>Fórmula</th><th>Medida corte</th><th>Ángulo</th><th>Cant. x abertura</th><th>Cant. total</th></tr></thead>
+        <tbody id="resultBody"></tbody>
+      </table>
+    </div>
+
+    <div class="card" id="resumenCard" style="display:none;">
+      <div class="flex-between">
+        <h3 style="margin:0;">Aberturas agregadas <span id="resumenCount" class="muted"></span></h3>
+        <div class="no-print" style="display:flex;gap:8px;">
+          <button class="ghost" onclick="irATab('vidrios')">Ver vidrios</button>
+          <button class="ghost" onclick="irATab('lista')">Ver lista de corte</button>
+          <button class="primary" onclick="irATab('optim')">Ver optimizador de barras</button>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th></th><th>Línea</th><th>Color</th><th>Material</th><th>Tipo</th><th>Medidas</th><th>Cant.</th><th></th></tr></thead>
+        <tbody id="resumenBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 2: VIDRIOS -->
+  <div class="tab" id="tab-vidrios">
+    <div class="card">
+      <div class="flex-between">
+        <div>
+          <h3 style="margin:0;">Planilla de vidrios</h3>
+          <div class="muted" style="font-size:12.5px;margin-top:4px;" id="vidriosML"></div>
+        </div>
+        <div class="no-print" style="display:flex;gap:8px;">
+          <button class="print-btn" onclick="imprimirVidrios()">🪟 Imprimir planilla (2 hojas)</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;margin-top:10px;">
+        <table>
+          <thead><tr><th>ID</th><th>Piso</th><th>Lado</th><th>Composición</th><th>Línea</th><th>Tipo</th><th>Ventana</th><th>Vidrio</th><th>Cant.</th><th>Obs.</th></tr></thead>
+          <tbody id="vidriosBody"></tbody>
+        </table>
+      </div>
+      <div class="note" id="vidriosEmpty">Todavía no cargaste ninguna abertura.</div>
+      <div class="warn-box" id="vidriosSinFormula" style="display:none;margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- TAB 3: LISTA DE CORTE -->
+  <div class="tab" id="tab-lista">
+    <div class="card">
+      <div class="flex-between">
+        <h3 style="margin:0;">Lista de corte acumulada</h3>
+        <a class="reset no-print" onclick="vaciarLista()">Vaciar lista</a>
+      </div>
+      <div class="no-print" id="filtroPerfilesBox" style="display:none;margin-bottom:14px;"></div>
+      <table>
+        <thead><tr><th></th><th>Línea</th><th>Color</th><th>Material</th><th>Abertura</th><th>Medidas</th><th>Perfil</th><th>Descripción</th><th>Medida corte (mm)</th><th>Ángulo</th><th>Cant.</th><th></th></tr></thead>
+        <tbody id="listaBody"></tbody>
+      </table>
+      <div class="note" id="listaEmpty">Todavía no agregaste ninguna abertura. Calculá una medida en la pestaña 1 y tocá "Agregar a lista de corte".</div>
+    </div>
+  </div>
+
+  <!-- TAB 4: OPTIMIZADOR -->
+  <div class="tab" id="tab-optim">
+    <div class="card no-print">
+      <div class="row">
+        <div class="field">
+          <label>Largo de barra estándar (mm)</label>
+          <input type="number" id="largoBarra" value="6000">
+        </div>
+        <div class="field">
+          <label>Ancho de sierra / kerf (mm)</label>
+          <input type="number" id="kerf" value="3">
+        </div>
+        <div class="field">
+          <label>Retazo mínimo aprovechable (mm)</label>
+          <input type="number" id="umbralRetazo" value="300">
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="primary" onclick="optimizar()">Optimizar barras</button>
+        </div>
+      </div>
+      <div class="note">El largo real de barra en Aluar varía según perfil (hasta ~6050mm según decís). Por ahora se usa 6000mm parejo para todos los perfiles — ajustalo acá si querés probar otro valor.</div>
+    </div>
+    <div id="optimResults"></div>
+  </div>
+
+</main>
+
+<style>#presTabla td,#presTabla th{padding:8px 10px;}</style>
+<style>
+  /* ---- Celular / tablet ---- */
+  .hdr-actions{flex-wrap:wrap;}
+  #tab-lista .card, #tab-pres .card, #tab-calc .card{overflow-x:auto;}
+  @media (max-width: 760px){
+    header{padding:12px 14px;}
+    header h1{font-size:16px;}
+    header .sub{font-size:11.5px;}
+    .hdr-actions{gap:6px !important;width:100%;}
+    .pill{font-size:11px;padding:3px 9px;white-space:nowrap;}
+    .print-btn{padding:7px 10px;font-size:12px;}
+    .obra-top{padding:10px 12px 0 !important;}
+    nav{padding:10px 12px 0;}
+    nav button{padding:8px 12px;font-size:12.5px;border-radius:8px;}
+    main{padding:12px 12px 50px;}
+    .card{padding:14px;}
+    .field{min-width:0 !important;flex:1 1 140px;}
+    .field input[type=number], .field input[type=text], .field select{width:100%;max-width:100%;}
+    .row{gap:10px;}
+    table{font-size:12px;}
+    th,td{padding:7px 6px;}
+    button.primary, button.ghost{padding:9px 12px;}
+    .flex-between{align-items:flex-start;}
+    .stat-grid{grid-template-columns:repeat(2,1fr);}
+    .obra-top .row{flex-direction:column;align-items:stretch;}
+    .obra-top .field{flex:none !important;width:100%;}
+    .obra-top button{width:100%;}
+    #presTabla table, #manoTabla table{display:block;}
+    #presTabla thead, #manoTabla thead{display:none;}
+    #presTabla tbody, #manoTabla tbody{display:block;}
+    #presTabla tr, #manoTabla tr{display:block;border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:var(--panel2);}
+    #presTabla td, #manoTabla td{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border:none;padding:4px 0;text-align:right;}
+    #presTabla td::before, #manoTabla td::before{content:attr(data-l);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;text-align:left;flex:0 0 36%;}
+    #presTabla td.acc, #manoTabla td.acc{justify-content:flex-end;padding-top:8px;white-space:normal;}
+    #presTabla td.acc::before, #manoTabla td.acc::before{display:none;}
+    #presTabla .card, #presTabla{overflow-x:visible;}
+  }
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script>
+/* ==================== DATOS DE FÓRMULAS DE CORTE ==================== */
+// Fuente: manual "Sistema Módena" (Aluar) y "Sistema Actual" (Metales del Talar / MDT).
+// formula: expresión con A (ancho total) y H (alto total). angulo: grados de corte en cada extremo.
+// cant: cantidad de piezas de ese perfil por cada abertura (unidad).
+const DATA = {
+  modena: {
+    nombre: "Modena (Aluar)",
+    tipos: {
+      corrediza: {
+        nombre: "Ventana/Puerta corrediza — vidrio simple, 2 hojas",
+        nota: "Incluye mosquitero y parante central (2 piezas, mismo H-79 que el lateral) — perfil 6207. Ventana y puerta unificadas: usan el mismo corte.",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+53", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:2},
+          {perfil:"6201", desc:"Jambas marco", formula:"H", angulo:"90-90", cant:2},
+          {perfil:"6200", desc:"Umbral y dintel marco", formula:"A-42", angulo:"90-90", cant:2},
+          {perfil:"6203", desc:"Parante lateral de hoja", formula:"H-79", angulo:"90-90", cant:2},
+          {perfil:"6207", desc:"Parante central de hoja", formula:"H-79", angulo:"90-90", cant:2},
+          {perfil:"6204", desc:"Zócalo y cabezal de hoja", formula:"(A/2)-24", angulo:"90-90", cant:4},
+          {perfil:"6255", desc:"Jambas mosquitero", formula:"H-88", angulo:"45-45", cant:2},
+          {perfil:"6255", desc:"Zócalo y cabezal mosquitero", formula:"(A/2)-7", angulo:"45-45", cant:2},
+          {perfil:"6256", desc:"Travesaño mosquitero", formula:"(A/2)-70", angulo:"90-90", cant:1},
+        ]
+      },
+      corrediza_dvh: {
+        nombre: "Ventana/Puerta corrediza — DVH (doble vidriado), 2 hojas",
+        nota: "Misma estructura que vidrio simple, con hoja reforzada para DVH. Incluye parante central (2 piezas, mismo H-79 que el lateral) — perfil 6250. Ventana y puerta unificadas: usan el mismo corte.",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+53", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:2},
+          {perfil:"6201", desc:"Jambas marco", formula:"H", angulo:"90-90", cant:2},
+          {perfil:"6200", desc:"Umbral y dintel marco", formula:"A-42", angulo:"90-90", cant:2},
+          {perfil:"6248", desc:"Parante lateral de hoja DVH", formula:"H-79", angulo:"90-90", cant:2},
+          {perfil:"6250", desc:"Parante central de hoja DVH", formula:"H-79", angulo:"90-90", cant:2},
+          {perfil:"6249", desc:"Zócalo y cabezal de hoja DVH", formula:"(A/2)-24", angulo:"90-90", cant:4},
+          {perfil:"6255", desc:"Jambas mosquitero", formula:"H-88", angulo:"45-45", cant:2},
+          {perfil:"6255", desc:"Zócalo y cabezal mosquitero", formula:"(A/2)-7", angulo:"45-45", cant:2},
+          {perfil:"6256", desc:"Travesaño mosquitero", formula:"(A/2)-70", angulo:"90-90", cant:1},
+        ]
+      },
+      corrediza_3h: {
+        nombre: "Puerta corrediza — 3 hojas, vidrio simple (puerta balcón)",
+        nota: "Verificado en el catálogo Aluar (pág. \"ventana y puerta corrediza\", columna PC3H) — se usan los valores de puerta para todo, sin separar ventana. Se unificó \"parante central\" y \"parante central con tirador\" en una sola pieza (4 en total). La jamba de tapa premarco no tiene fórmula fija (\"(•) medir en la abertura armada\") — medila en obra. El travesaño de mosquitero no tenía cantidad confirmada para 3 hojas en la tabla, así que no está incluido acá — confirmalo antes de cortar si lleva mosquitero.",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:1},
+          {perfil:"6241", desc:"Jambas de marco (3 guías)", formula:"H", angulo:"90-90", cant:2},
+          {perfil:"6240", desc:"Umbral y dintel (3 guías)", formula:"A-42", angulo:"90-90", cant:2},
+          {perfil:"6203", desc:"Parante lateral de hoja", formula:"H-79", angulo:"90-90", cant:2},
+          {perfil:"6207", desc:"Parante central de hoja", formula:"H-79", angulo:"90-90", cant:4},
+          {perfil:"6204", desc:"Zócalo y cabezal de hojas (laterales)", formula:"(A/3)-7", angulo:"90-90", cant:2},
+          {perfil:"6204", desc:"Zócalo y cabezal de hojas (central)", formula:"(A/3)+1", angulo:"90-90", cant:1},
+          {perfil:"6209", desc:"Zócalo alto (laterales)", formula:"(A/3)-7", angulo:"90-90", cant:2},
+          {perfil:"6209", desc:"Zócalo alto (central)", formula:"(A/3)+1", angulo:"90-90", cant:1},
+          {perfil:"6255", desc:"Jambas mosquitero", formula:"H-88", angulo:"45-45", cant:2},
+          {perfil:"6255", desc:"Zócalo y cabezal mosquitero", formula:"(A/2)-7", angulo:"45-45", cant:2},
+        ]
+      },
+      corrediza_3h_dvh: {
+        nombre: "Puerta corrediza — 3 hojas, DVH (puerta balcón)",
+        nota: "Mismos cortes que la versión de vidrio simple, solo cambian los perfiles de hoja a DVH (6248/6250/6249/6252/6253). Premarco, tapa premarco, marco de 3 guías y mosquitero usan el mismo perfil que la de vidrio simple. La jamba de tapa premarco no tiene fórmula fija — medila en obra.",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:1},
+          {perfil:"6241", desc:"Jambas de marco (3 guías)", formula:"H", angulo:"90-90", cant:2},
+          {perfil:"6240", desc:"Umbral y dintel (3 guías)", formula:"A-42", angulo:"90-90", cant:2},
+          {perfil:"6248", desc:"Parante lateral de hoja DVH", formula:"H-79", angulo:"90-90", cant:2},
+          {perfil:"6250", desc:"Parante central de hoja DVH", formula:"H-79", angulo:"90-90", cant:4},
+          {perfil:"6249", desc:"Zócalo y cabezal de hojas DVH (laterales)", formula:"(A/3)-7", angulo:"90-90", cant:2},
+          {perfil:"6249", desc:"Zócalo y cabezal de hojas DVH (central)", formula:"(A/3)+1", angulo:"90-90", cant:1},
+          {perfil:"6252", desc:"Zócalo alto DVH (laterales)", formula:"(A/3)-7", angulo:"90-90", cant:2},
+          {perfil:"6252", desc:"Zócalo alto DVH (central)", formula:"(A/3)+1", angulo:"90-90", cant:1},
+          {perfil:"6255", desc:"Jambas mosquitero", formula:"H-88", angulo:"45-45", cant:2},
+          {perfil:"6255", desc:"Zócalo y cabezal mosquitero", formula:"(A/2)-7", angulo:"45-45", cant:2},
+        ]
+      },
+      abrir_camara: {
+        nombre: "Ventana de abrir — cámara compensadora, 1 hoja, borde recto",
+        nota: "Sólo confirmado en línea Modena/Aluar por ahora.",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+53", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:2},
+          {perfil:"6210", desc:"Jambas marco", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6210", desc:"Umbral y dintel marco", formula:"A", angulo:"45-45", cant:2},
+          {perfil:"6211", desc:"Jambas de hoja", formula:"H-39", angulo:"45-45", cant:2},
+          {perfil:"6211", desc:"Zócalo y cabezal de hoja", formula:"A-39", angulo:"45-45", cant:2},
+        ]
+      },
+      doble_contacto: {
+        nombre: "Ventana de abrir / oscilobatiente — doble contacto, 1 hoja",
+        nota: "Fórmulas verificadas iguales en Modena y Actual (H-39 / A-39).",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+53", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:2},
+          {perfil:"6216", desc:"Jambas marco", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6216", desc:"Umbral y dintel marco", formula:"A", angulo:"45-45", cant:2},
+          {perfil:"6215", desc:"Jambas de hoja", formula:"H-39", angulo:"45-45", cant:2},
+          {perfil:"6215", desc:"Zócalo y cabezal de hoja", formula:"A-39", angulo:"45-45", cant:2},
+        ]
+      },
+      banderola: {
+        nombre: "Ventana banderola — borde recto",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+53", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:2},
+          {perfil:"6216", desc:"Jambas marco", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6216", desc:"Umbral y dintel marco", formula:"A", angulo:"45-45", cant:2},
+          {perfil:"6215", desc:"Jambas de hoja", formula:"H-39", angulo:"45-45", cant:2},
+          {perfil:"6215", desc:"Zócalo y cabezal de hoja", formula:"A-39", angulo:"45-45", cant:2},
+        ]
+      },
+      ventiluz: {
+        nombre: "Ventana ventiluz — borde recto",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+53", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:2},
+          {perfil:"6216", desc:"Jambas marco", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6216", desc:"Umbral y dintel marco", formula:"A", angulo:"45-45", cant:2},
+          {perfil:"6227", desc:"Jambas de hoja", formula:"H-39", angulo:"45-45", cant:2},
+          {perfil:"6227", desc:"Zócalo y cabezal de hoja", formula:"A-39", angulo:"45-45", cant:2},
+        ]
+      },
+      paño_fijo: {
+        nombre: "Paño fijo — recto",
+        nota: "Corregido: jambas = H (lado vertical), umbral y dintel = A (arriba/abajo), igual que en el resto de los tipos. Verificado contra el catálogo Aluar (Módena2, pág. 64). Sin travesaño — no se usa en esta línea.",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+53", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:2},
+          {perfil:"6216", desc:"Jambas marco recto", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6216", desc:"Umbral y dintel marco recto", formula:"A", angulo:"45-45", cant:2},
+        ]
+      },
+      proyectante: {
+        nombre: "Ventana proyectante — borde recto",
+        nota: "Sólo disponible en línea Modena/Aluar (no encontrado en el manual Actual/MDT revisado).",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+53", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:2},
+          {perfil:"6259", desc:"Jambas marco", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6259", desc:"Umbral y dintel marco", formula:"A", angulo:"45-45", cant:2},
+          {perfil:"6258", desc:"Jambas hoja", formula:"H-32", angulo:"45-45", cant:2},
+          {perfil:"6258", desc:"Zócalo y cabezal hoja", formula:"A-32", angulo:"45-45", cant:2},
+        ]
+      },
+      puerta_rebatir: {
+        nombre: "Puerta de rebatir — 1 hoja, borde recto",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+18", angulo:"45-90", cant:2},
+          {perfil:"6205", desc:"Dintel premarco", formula:"A+36", angulo:"45-45", cant:1},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+27", angulo:"45-90", cant:2},
+          {perfil:"6206", desc:"Dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:1},
+          {perfil:"6216", desc:"Jambas marco", formula:"H", angulo:"45-90", cant:2},
+          {perfil:"6216", desc:"Dintel marco", formula:"A", angulo:"45-45", cant:1},
+          {perfil:"6214", desc:"Jambas de hoja", formula:"H-24", angulo:"45-90", cant:2},
+          {perfil:"6214", desc:"Cabezal de hoja", formula:"A-39", angulo:"45-45", cant:1},
+          {perfil:"6219", desc:"Zócalo de hoja", formula:"H-192", angulo:"90-90", cant:1},
+          {perfil:"6218", desc:"Travesaño de hoja", formula:"H-192", angulo:"90-90", cant:1},
+        ]
+      },
+      guillotina: {
+        nombre: "Ventana guillotina",
+        nota: "Sólo disponible en línea Modena/Aluar (no encontrado en el manual Actual/MDT revisado).",
+        piezas: [
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+53", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:2},
+          {perfil:"6293", desc:"Parante central externo", formula:"A-111", angulo:"45-45", cant:1},
+          {perfil:"6294", desc:"Parante central interno", formula:"A-91", angulo:"45-45", cant:1},
+          {perfil:"6295", desc:"Cabezal de hoja", formula:"A-111", angulo:"45-45", cant:1},
+          {perfil:"6295", desc:"Zócalo de hoja", formula:"A-91", angulo:"45-45", cant:1},
+          {perfil:"6296", desc:"Jambas de marco", formula:"H-42", angulo:"90-90", cant:2},
+          {perfil:"6297", desc:"Umbral de marco", formula:"A", angulo:"90-90", cant:1},
+          {perfil:"6298", desc:"Dintel de marco", formula:"A", angulo:"90-90", cant:1},
+          {perfil:"6900", desc:"Parante lateral hoja", formula:"(H/2)-8", angulo:"45-45", cant:4},
+          {perfil:"6901", desc:"Jambas premarco guillotina", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6901", desc:"Umbral y dintel premarco guillotina", formula:"A+36", angulo:"45-45", cant:2},
+        ]
+      },
+      corrediza_45: {
+        nombre: "Ventana/Puerta corrediza — marco y hojas corte a 45° (con mosquitero)",
+        nota: "Sólo disponible en línea Modena/Aluar por ahora.",
+        piezas: [
+          {perfil:"6205", desc:"Jambas premarco", formula:"H+36", angulo:"45-45", cant:2},
+          {perfil:"6205", desc:"Umbral y dintel premarco", formula:"A+36", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+53", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+53", angulo:"45-45", cant:2},
+          {perfil:"6906", desc:"Jambas marco", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6906", desc:"Umbral y dintel marco", formula:"A", angulo:"45-45", cant:2},
+          {perfil:"6908", desc:"Parante lateral de hoja", formula:"H-80", angulo:"45-45", cant:4},
+          {perfil:"6908", desc:"Zócalo y cabezal de hoja", formula:"(A/2)-10", angulo:"45-45", cant:2},
+          {perfil:"6907", desc:"Suplemento parante central", formula:"H-80", angulo:"90-90", cant:2},
+          {perfil:"6255", desc:"Jambas mosquitero", formula:"H-88", angulo:"45-45", cant:2},
+          {perfil:"6255", desc:"Zócalo y cabezal mosquitero", formula:"(A/2)-34", angulo:"45-45", cant:1},
+          {perfil:"6256", desc:"Travesaño mosquitero", formula:"(A/2)-100", angulo:"90-90", cant:2},
+        ]
+      },
+    }
+  },
+  a30: {
+    nombre: "A30 New (Aluar)",
+    tipos: {
+      corrediza_3h: {
+        nombre: "Ventana/Puerta corrediza — 3 hojas (por ahora solo vidrio)",
+        nota: "Todavía no están cargados los cortes de perfiles de A30 3 hojas — por ahora esta abertura solo calcula el vidrio.",
+        piezas: []
+      },
+      corrediza: {
+        nombre: "Ventana/Puerta corrediza — 2 hojas",
+        nota: "Línea A30 New (catálogo Aluar 2008). Incluye mosquitero.",
+        piezas: [
+          {perfil:"6066", desc:"Jambas premarco", formula:"H+37", angulo:"45-45", cant:2},
+          {perfil:"6066", desc:"Umbral y dintel premarco", formula:"A+37", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+54", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+54", angulo:"45-45", cant:2},
+          {perfil:"6036", desc:"Jambas marco", formula:"H", angulo:"90-90", cant:2},
+          {perfil:"6037", desc:"Umbral y dintel marco", formula:"A-45", angulo:"90-90", cant:2},
+          {perfil:"6034", desc:"Parante lateral de hoja", formula:"H-86", angulo:"90-90", cant:2},
+          {perfil:"6035", desc:"Parante central de hoja", formula:"H-86", angulo:"90-90", cant:2},
+          {perfil:"6061", desc:"Zócalo y cabezal de hoja", formula:"(A/2)-14", angulo:"90-90", cant:4},
+          {perfil:"5996", desc:"Travesaño de hoja (opcional)", formula:"(A/2)-96", angulo:"90-90", cant:2},
+          {perfil:"6255", desc:"Jambas mosquitero", formula:"H-96", angulo:"45-45", cant:2},
+          {perfil:"6255", desc:"Zócalo y cabezal mosquitero", formula:"(A/2)+10", angulo:"45-45", cant:2},
+          {perfil:"6265", desc:"Travesaño mosquitero", formula:"(A/2)-56", angulo:"90-90", cant:1},
+          {perfil:"6039", desc:"Tope mosquitero", formula:"H-109", angulo:"90-90", cant:2},
+        ]
+      },
+      abrir_oscilobatiente: {
+        nombre: "Ventana de abrir / oscilobatiente — 1 hoja, borde curvo coplanar",
+        piezas: [
+          {perfil:"6066", desc:"Jambas premarco", formula:"H+37", angulo:"45-45", cant:2},
+          {perfil:"6066", desc:"Umbral y dintel premarco", formula:"A+37", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+54", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+54", angulo:"45-45", cant:2},
+          {perfil:"6051", desc:"Jambas marco", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6051", desc:"Umbral y dintel marco", formula:"A", angulo:"45-45", cant:2},
+          {perfil:"6052", desc:"Jambas hoja", formula:"H-47", angulo:"45-45", cant:2},
+          {perfil:"6052", desc:"Zócalo y cabezal hoja", formula:"A-47", angulo:"45-45", cant:2},
+        ]
+      },
+      proyectante: {
+        nombre: "Ventana proyectante",
+        piezas: [
+          {perfil:"6066", desc:"Jambas premarco", formula:"H+37", angulo:"45-45", cant:2},
+          {perfil:"6066", desc:"Dintel y umbral premarco", formula:"A+37", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+54", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Dintel y umbral tapa premarco", formula:"A+54", angulo:"45-45", cant:2},
+          {perfil:"6057", desc:"Jambas marco", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6057", desc:"Umbral y dintel marco", formula:"A", angulo:"45-45", cant:2},
+          {perfil:"6056", desc:"Jambas hoja", formula:"H-43", angulo:"45-45", cant:2},
+          {perfil:"6058", desc:"Zócalo y cabezal hoja", formula:"A-43", angulo:"45-45", cant:2},
+        ]
+      },
+      puerta_rebatir: {
+        nombre: "Puerta de rebatir — 1 hoja, borde curvo coplanar",
+        piezas: [
+          {perfil:"6066", desc:"Jambas premarco", formula:"H+19", angulo:"45-90", cant:2},
+          {perfil:"6066", desc:"Dintel premarco", formula:"A+37", angulo:"45-45", cant:1},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+27", angulo:"45-90", cant:2},
+          {perfil:"6206", desc:"Dintel tapa premarco", formula:"A+54", angulo:"45-45", cant:1},
+          {perfil:"6040", desc:"Jambas marco", formula:"H", angulo:"45-90", cant:2},
+          {perfil:"6040", desc:"Dintel marco", formula:"A", angulo:"45-45", cant:1},
+          {perfil:"6041", desc:"Jambas hoja", formula:"H-42", angulo:"45-90", cant:2},
+          {perfil:"6041", desc:"Cabezal hoja", formula:"A-74", angulo:"45-45", cant:1},
+          {perfil:"6043", desc:"Zócalo alto hoja", formula:"A-228", angulo:"90-90", cant:1},
+          {perfil:"6042", desc:"Travesaño hoja (opcional)", formula:"A-228", angulo:"90-90", cant:1},
+        ]
+      },
+      paño_fijo: {
+        nombre: "Paño fijo",
+        piezas: [
+          {perfil:"6066", desc:"Jambas premarco", formula:"H+37", angulo:"45-45", cant:2},
+          {perfil:"6066", desc:"Umbral y dintel premarco", formula:"A+37", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+54", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Umbral y dintel tapa premarco", formula:"A+54", angulo:"45-45", cant:2},
+          {perfil:"6055", desc:"Jambas paño fijo", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6055", desc:"Umbral y dintel paño fijo", formula:"A", angulo:"45-45", cant:2},
+          {perfil:"6060", desc:"Travesaño vertical (opcional)", formula:"H-59", angulo:"90-90", cant:1},
+          {perfil:"6060", desc:"Travesaño horizontal (opcional)", formula:"A-59", angulo:"90-90", cant:1},
+        ]
+      },
+      puerta_vaiven: {
+        nombre: "Puerta vaivén — 1 hoja, borde curvo",
+        piezas: [
+          {perfil:"6066", desc:"Jambas premarco", formula:"H+19", angulo:"45-90", cant:2},
+          {perfil:"6066", desc:"Dintel premarco", formula:"A+37", angulo:"45-45", cant:1},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+27", angulo:"45-90", cant:2},
+          {perfil:"6206", desc:"Dintel tapa premarco", formula:"A+54", angulo:"45-45", cant:1},
+          {perfil:"6076", desc:"Jambas marco", formula:"H", angulo:"45-90", cant:2},
+          {perfil:"6076", desc:"Dintel marco", formula:"A", angulo:"45-45", cant:1},
+          {perfil:"6075", desc:"Jambas hoja", formula:"H-71", angulo:"45-45", cant:2},
+          {perfil:"6075", desc:"Zócalo y cabezal hoja", formula:"A-124", angulo:"45-45", cant:1},
+          {perfil:"6077", desc:"Complemento vertical marco", formula:"H-33", angulo:"45-90", cant:2},
+          {perfil:"6077", desc:"Complemento horizontal marco", formula:"A-66", angulo:"45-45", cant:1},
+        ]
+      },
+      corrediza_paralela: {
+        nombre: "Puerta corrediza paralela (1 hoja fija + 1 móvil)",
+        piezas: [
+          {perfil:"6066", desc:"Jambas premarco", formula:"H+37", angulo:"45-45", cant:2},
+          {perfil:"6066", desc:"Dintel y umbral premarco", formula:"A+37", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Jambas tapa premarco", formula:"H+54", angulo:"45-45", cant:2},
+          {perfil:"6206", desc:"Dintel y umbral tapa prem.", formula:"A+54", angulo:"45-45", cant:2},
+          {perfil:"6055", desc:"Jambas marco", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"6055", desc:"Umbral y dintel marco", formula:"A", angulo:"45-45", cant:2},
+          {perfil:"6052", desc:"Jambas hoja", formula:"H-47", angulo:"45-45", cant:2},
+          {perfil:"6052", desc:"Zócalo y cabezal hoja", formula:"(A/2)-34", angulo:"45-45", cant:2},
+          {perfil:"6060", desc:"Travesaño vertical", formula:"H-59", angulo:"90-90", cant:1},
+        ]
+      },
+    }
+  },
+  a40: {
+    nombre: "A40 (Aluar)",
+    tipos: {
+      corrediza: {
+        nombre: "Ventana corrediza — 2 hojas, corte 90°",
+        nota: "Verificado en el catálogo Aluar A40 Corredizas (pág. 28). Sin mosquitero — es una sección aparte del catálogo, todavía no cargada.",
+        piezas: [
+          {perfil:"8265", desc:"Jambas premarco", formula:"H+40", angulo:"45-45", cant:2},
+          {perfil:"8265", desc:"Umbral y dintel premarco", formula:"A+40", angulo:"45-45", cant:2},
+          {perfil:"8063", desc:"Jamba tapa premarco", formula:"H+58", angulo:"45-45", cant:2},
+          {perfil:"8063", desc:"Umbral y dintel tapa premarco", formula:"A+58", angulo:"45-45", cant:2},
+          {perfil:"8220", desc:"Jamba de marco", formula:"H", angulo:"90-90", cant:2},
+          {perfil:"8215", desc:"Umbral y dintel marco", formula:"A-50", angulo:"90-90", cant:2},
+          {perfil:"8248", desc:"Parante lateral de hoja", formula:"H-77", angulo:"90-90", cant:2},
+          {perfil:"8249", desc:"Parante central de hoja", formula:"H-77", angulo:"90-90", cant:2},
+          {perfil:"8253", desc:"Zócalo y cabezal de hoja", formula:"(A/2)-25", angulo:"90-90", cant:4},
+        ]
+      },
+      corrediza_dvh: {
+        nombre: "Ventana corrediza — 2 hojas, DVH, corte 90°",
+        nota: "Mismos cortes que la versión de vidrio simple, solo cambian los perfiles de hoja a DVH (8221/8216/8217).",
+        piezas: [
+          {perfil:"8265", desc:"Jambas premarco", formula:"H+40", angulo:"45-45", cant:2},
+          {perfil:"8265", desc:"Umbral y dintel premarco", formula:"A+40", angulo:"45-45", cant:2},
+          {perfil:"8063", desc:"Jamba tapa premarco", formula:"H+58", angulo:"45-45", cant:2},
+          {perfil:"8063", desc:"Umbral y dintel tapa premarco", formula:"A+58", angulo:"45-45", cant:2},
+          {perfil:"8220", desc:"Jamba de marco", formula:"H", angulo:"90-90", cant:2},
+          {perfil:"8215", desc:"Umbral y dintel marco", formula:"A-50", angulo:"90-90", cant:2},
+          {perfil:"8221", desc:"Parante lateral de hoja DVH", formula:"H-77", angulo:"90-90", cant:2},
+          {perfil:"8216", desc:"Parante central de hoja DVH", formula:"H-77", angulo:"90-90", cant:2},
+          {perfil:"8217", desc:"Zócalo y cabezal de hoja DVH", formula:"(A/2)-25", angulo:"90-90", cant:4},
+        ]
+      },
+      corrediza_puerta: {
+        nombre: "Puerta corrediza — 2 hojas, corte 90° (reforzada)",
+        nota: "Verificado en el catálogo Aluar A40 Corredizas (pág. 34) — es una tabla propia, distinta a la de ventana (no una tabla incompleta): usa H-102 en vez de H-77, y suma un parante central reforzado. La jamba de tapa premarco se ajusta según el nivel de piso terminado (\"replantear\") — medila en obra.",
+        piezas: [
+          {perfil:"8265", desc:"Jambas premarco", formula:"H+40", angulo:"45-45", cant:2},
+          {perfil:"8265", desc:"Umbral y dintel premarco", formula:"A+40", angulo:"45-45", cant:2},
+          {perfil:"8063", desc:"Dintel tapa premarco", formula:"A+58", angulo:"45-45", cant:1},
+          {perfil:"8220", desc:"Jamba de marco", formula:"H", angulo:"90-90", cant:2},
+          {perfil:"8246", desc:"Umbral marco", formula:"A-50", angulo:"90-90", cant:1},
+          {perfil:"8215", desc:"Dintel marco", formula:"A-50", angulo:"90-90", cant:1},
+          {perfil:"8248", desc:"Parante lateral de hoja", formula:"H-102", angulo:"90-90", cant:2},
+          {perfil:"8249", desc:"Parante central de hoja", formula:"H-102", angulo:"90-90", cant:1},
+          {perfil:"8250", desc:"Parante central reforzado de hoja", formula:"H-102", angulo:"90-90", cant:1},
+          {perfil:"8253", desc:"Cabezal de hoja", formula:"(A/2)-25", angulo:"90-90", cant:2},
+          {perfil:"8254", desc:"Zócalo alto de hoja", formula:"(A/2)-25", angulo:"90-90", cant:2},
+        ]
+      },
+      corrediza_puerta_dvh: {
+        nombre: "Puerta corrediza — 2 hojas, DVH, corte 90° (reforzada)",
+        nota: "Mismos cortes que la versión de vidrio simple, solo cambian los perfiles de hoja a DVH (8221/8216/8243/8217/8218). La jamba de tapa premarco se ajusta según el nivel de piso terminado — medila en obra.",
+        piezas: [
+          {perfil:"8265", desc:"Jambas premarco", formula:"H+40", angulo:"45-45", cant:2},
+          {perfil:"8265", desc:"Umbral y dintel premarco", formula:"A+40", angulo:"45-45", cant:2},
+          {perfil:"8063", desc:"Dintel tapa premarco", formula:"A+58", angulo:"45-45", cant:1},
+          {perfil:"8220", desc:"Jamba de marco", formula:"H", angulo:"90-90", cant:2},
+          {perfil:"8246", desc:"Umbral marco", formula:"A-50", angulo:"90-90", cant:1},
+          {perfil:"8215", desc:"Dintel marco", formula:"A-50", angulo:"90-90", cant:1},
+          {perfil:"8221", desc:"Parante lateral de hoja DVH", formula:"H-102", angulo:"90-90", cant:2},
+          {perfil:"8216", desc:"Parante central de hoja DVH", formula:"H-102", angulo:"90-90", cant:1},
+          {perfil:"8243", desc:"Parante central reforzado de hoja DVH", formula:"H-102", angulo:"90-90", cant:1},
+          {perfil:"8217", desc:"Cabezal de hoja DVH", formula:"(A/2)-25", angulo:"90-90", cant:2},
+          {perfil:"8218", desc:"Zócalo alto de hoja DVH", formula:"(A/2)-25", angulo:"90-90", cant:2},
+        ]
+      },
+      paño_fijo: {
+        nombre: "Paño fijo",
+        nota: "Verificado en el catálogo Aluar A40 Batientes (pág. 21). Sin travesaño — no lo usás. La tabla también trae contravidrios, pero son todos \"medir en la abertura armada\" (sin fórmula fija), así que no están cargados.",
+        piezas: [
+          {perfil:"8064", desc:"Jambas premarco", formula:"H+40", angulo:"45-45", cant:2},
+          {perfil:"8064", desc:"Umbral y dintel premarco", formula:"A+40", angulo:"45-45", cant:2},
+          {perfil:"8063", desc:"Jambas tapa premarco", formula:"H+58", angulo:"45-45", cant:2},
+          {perfil:"8063", desc:"Umbral y dintel tapa premarco", formula:"A+58", angulo:"45-45", cant:2},
+          {perfil:"8342", desc:"Jambas marco", formula:"H", angulo:"45-45", cant:2},
+          {perfil:"8342", desc:"Umbral y dintel marco", formula:"A", angulo:"45-45", cant:2},
+        ]
+      },
+    }
+  },
+};
+
+/* ==================== ESTADO ==================== */
+let orden = []; // lista de corte acumulada
+let ultimoCalculo = null;
+
+/* ==================== NAVEGACIÓN DE TABS ==================== */
+document.querySelectorAll('nav button').forEach(btn=>{
+  btn.addEventListener('click',()=>irATab(btn.dataset.tab));
+});
+function irATab(tabName){
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tabName));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tabName).classList.add('active');
+  if(tabName==='pres') cargarPres();
+  if(tabName==='vidrios') renderVidrios();
+  if(tabName==='lista') renderLista();
+  if(tabName==='optim') optimizar();
+  if(tabName==='stock') renderStockTab();
+}
+
+/* ==================== POBLAR SELECT DE TIPOS ==================== */
+function poblarTipos(){
+  const linea = document.getElementById('linea').value;
+  const sel = document.getElementById('tipo');
+  sel.innerHTML='';
+  const tipos = DATA[linea].tipos;
+  Object.keys(tipos).forEach(k=>{
+    const opt = document.createElement('option');
+    opt.value=k; opt.textContent=tipos[k].nombre;
+    sel.appendChild(opt);
+  });
+  mostrarNota();
+}
+function mostrarNota(){
+  const linea = document.getElementById('linea').value;
+  const tipo = document.getElementById('tipo').value;
+  const t = DATA[linea].tipos[tipo];
+  document.getElementById('tipoNote').textContent = t && t.nota ? t.nota : '';
+}
+document.getElementById('linea').addEventListener('change', poblarTipos);
+document.getElementById('tipo').addEventListener('change', mostrarNota);
+poblarTipos();
+
+/* ==================== EVALUAR FÓRMULA ==================== */
+function evalFormula(formula, A, H){
+  // formula tipo "H+36", "(A/2)-24", "A", "H-79"
+  let expr = formula.replace(/A/g, `(${A})`).replace(/H/g, `(${H})`);
+  // eslint-disable-next-line no-new-func
+  return Math.round(Function('"use strict";return ('+expr+')')());
+}
+
+/* ==================== CLASIFICAR PIEZAS (para poder incluir/excluir grupos) ==================== */
+// Se clasifica por palabras clave en la descripción, no hay que taggear cada pieza a mano.
+function piezaGrupo(desc){
+  const d = desc.toLowerCase();
+  if(d.includes('mosquitero')) return 'mosquitero';
+  if(d.includes('tapa premarco') || d.includes('tapa junta') || d.includes('tapa prem') || d.includes('contramarco')) return 'tapa_premarco';
+  if(d.includes('premarco')) return 'premarco';
+  return 'principal';
+}
+
+/* ==================== CALCULAR ==================== */
+function calcular(){
+  const linea = document.getElementById('linea').value;
+  const tipoKey = document.getElementById('tipo').value;
+  const A = parseFloat(document.getElementById('ancho').value);
+  const H = parseFloat(document.getElementById('alto').value);
+  const cantAb = parseInt(document.getElementById('cantAberturas').value)||1;
+  if(!A || !H){ alert('Ingresá ancho y alto.'); return; }
+  const color = document.getElementById('colorPerfil').value;
+  const material = document.getElementById('materialPerfil').value;
+  const incluirPremarco = document.getElementById('chkPremarco').checked;
+  const incluirTapaPremarco = document.getElementById('chkTapaPremarco').checked;
+  const incluirMosquitero = document.getElementById('chkMosquitero').checked;
+  const tipo = DATA[linea].tipos[tipoKey];
+  const piezasFiltradas = tipo.piezas.filter(p=>{
+    const g = piezaGrupo(p.desc);
+    if(g==='premarco' && !incluirPremarco) return false;
+    if(g==='tapa_premarco' && !incluirTapaPremarco) return false;
+    if(g==='mosquitero' && !incluirMosquitero) return false;
+    return true;
+  });
+  if(piezasFiltradas.length===0 && tipo.piezas.length>0){ alert('Desmarcaste todo — no queda ninguna pieza para calcular.'); return; }
+  const filas = piezasFiltradas.map(p=>{
+    const medida = evalFormula(p.formula, A, H);
+    return {...p, medida, cantTotal: p.cant*cantAb};
+  });
+  ultimoCalculo = {linea, tipoKey, tipoNombre: tipo.nombre, A, H, cantAb, color, material, filas};
+
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultTitle').innerHTML =
+    `${tipo.nombre} <span class="badge ${linea}">${DATA[linea].nombre}</span> ${colorLabel(color)} ${materialLabel(material)} — A:${A}mm x H:${H}mm x${cantAb}`;
+  const body = document.getElementById('resultBody');
+  body.innerHTML = filas.map(f=>`
+    <tr>
+      <td>${f.perfil}</td>
+      <td>${f.desc}</td>
+      <td class="muted">${f.formula}</td>
+      <td><strong>${f.medida} mm</strong></td>
+      <td class="muted">${f.angulo}</td>
+      <td>${f.cant}</td>
+      <td>${f.cantTotal}</td>
+    </tr>
+  `).join('');
+  const v = vidrioDe(ultimoCalculo);
+  const pv = document.getElementById('vidrioPreview');
+  if(v && !v.invalido) pv.innerHTML = `🪟 Vidrio: <b style="color:var(--accent)">${v.ancho} x ${v.alto} mm</b> × ${v.porAbertura} por abertura (${v.cant} en total) — ${esc(document.getElementById('composicion').value)}`;
+  else if(v) pv.textContent = 'Vidrio: las medidas dan negativo o muy chico — revisá ancho y alto.';
+  else pv.textContent = 'Vidrio: todavía no hay fórmula calibrada para esta línea / tipo.';
+}
+
+function agregarAOrden(){
+  if(!ultimoCalculo){ alert('Primero calculá una medida.'); return; }
+  const val = id => document.getElementById(id).value;
+  const item = JSON.parse(JSON.stringify(ultimoCalculo));
+  item.etiqueta = val('idVentana').trim() || null;
+  item.piso = val('piso').trim();
+  item.lado = val('lado');
+  item.composicion = val('composicion');
+  item.observacion = val('observacion').trim();
+  orden.push(item);
+  ['idVentana','piso','observacion'].forEach(id=>{ document.getElementById(id).value = ''; });
+  document.getElementById('listaCount').textContent = '('+orden.length+')';
+  guardarOrdenActual();
+  renderResumenCalc();
+}
+
+/* ==================== COLOR POR ABERTURA ==================== */
+// Cada abertura agregada a la lista tiene su propio color (fijo por índice), consistente
+// en el resumen, la lista de corte y el optimizador — así se puede seguir la misma ventana
+// a través de todos los perfiles que la componen.
+function colorForOrden(idx){
+  const hue = (idx*137.508)%360; // ángulo dorado: colores bien distribuidos y distinguibles
+  return `hsl(${hue.toFixed(1)},65%,50%)`;
+}
+// Pastilla de color con "V1", "V2"... para identificar cada abertura de un vistazo,
+// en el resumen, la lista de corte y el optimizador.
+// Etiqueta de una abertura: la que puso el usuario al agregarla, o "V{n}" automático si no puso nada.
+function etiquetaOrden(idx){
+  const item = orden[idx];
+  return (item && item.etiqueta) ? item.etiqueta : ('V'+(idx+1));
+}
+function ventanaBadge(idx){
+  return `<span class="v-badge" style="background:${colorForOrden(idx)};">${etiquetaOrden(idx)}</span>`;
+}
+// Terminación real del perfil de aluminio (blanco/negro/anodizado) — no confundir con el
+// color de colorForOrden(), que es solo un identificador visual por abertura.
+function colorLabel(c){
+  const map = {blanco:'⬜ Blanco', negro:'⬛ Negro', anodizado:'🟫 Anodizado'};
+  return map[c] || c || '';
+}
+// Origen/calidad del aluminio (virgen / reciclado / tocho) — aparte del color, porque dos
+// barras del mismo perfil y color pueden ser de distinta calidad de material.
+function materialLabel(m){
+  const map = {virgen:'✨ Virgen', reciclado:'♻️ Reciclado', tocho:'🔩 Tocho'};
+  return map[m] || m || '';
+}
+
+/* ==================== RESUMEN EN TAB 1 (para cargar varias ventanas seguidas) ==================== */
+function renderResumenCalc(){
+  const card = document.getElementById('resumenCard');
+  const body = document.getElementById('resumenBody');
+  if(orden.length===0){ card.style.display='none'; return; }
+  card.style.display='block';
+  document.getElementById('resumenCount').textContent = '('+orden.length+' abertura'+(orden.length>1?'s':'')+')';
+  body.innerHTML = orden.map((item,idx)=>`
+    <tr>
+      <td>${ventanaBadge(idx)}</td>
+      <td><span class="badge ${item.linea}">${DATA[item.linea].nombre}</span></td>
+      <td>${colorLabel(item.color)}</td>
+      <td>${materialLabel(item.material)}</td>
+      <td>${item.tipoNombre}</td>
+      <td>A:${item.A} H:${item.H}</td>
+      <td>x${item.cantAb}</td>
+      <td><button class="danger no-print" onclick="quitarItem(${idx})">Quitar</button></td>
+    </tr>
+  `).join('');
+}
+
+/* ==================== FILTRO POR PERFIL ==================== */
+// Permite mostrar/ocultar perfiles puntuales en la lista de corte y el optimizador —
+// por ejemplo para ver "solo los premarcos" o "solo los contramarcos" de todo lo cargado.
+let filtroPerfilesOcultos = new Set();
+function perfilesEnOrden(){
+  const map = {};
+  orden.forEach(item=>{
+    item.filas.forEach(f=>{ if(!map[f.perfil]) map[f.perfil] = f.desc; });
+  });
+  return Object.keys(map).sort().map(perfil=>({perfil, desc:map[perfil]}));
+}
+function renderFiltroPerfiles(){
+  const box = document.getElementById('filtroPerfilesBox');
+  const perfiles = perfilesEnOrden();
+  if(perfiles.length===0){ box.innerHTML=''; box.style.display='none'; return; }
+  box.style.display='block';
+  box.innerHTML = `
+    <div class="flex-between" style="margin-bottom:8px;">
+      <span class="muted" style="font-size:12.5px;">Filtrar por perfil</span>
+      <div style="display:flex;gap:14px;">
+        <a class="reset" onclick="mostrarTodosPerfiles()">Mostrar todos</a>
+        <a class="reset" onclick="ocultarTodosPerfiles()">Ocultar todos</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      ${perfiles.map(p=>`
+        <label class="check-label" style="background:var(--panel2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;">
+          <input type="checkbox" ${filtroPerfilesOcultos.has(p.perfil)?'':'checked'} onchange="toggleFiltroPerfil('${p.perfil}')">
+          ${p.perfil} — ${p.desc}
+        </label>
+      `).join('')}
+    </div>
+  `;
+}
+function toggleFiltroPerfil(perfil){
+  if(filtroPerfilesOcultos.has(perfil)) filtroPerfilesOcultos.delete(perfil);
+  else filtroPerfilesOcultos.add(perfil);
+  renderLista();
+}
+function mostrarTodosPerfiles(){ filtroPerfilesOcultos.clear(); renderLista(); }
+function ocultarTodosPerfiles(){ filtroPerfilesOcultos = new Set(perfilesEnOrden().map(p=>p.perfil)); renderLista(); }
+
+/* ==================== LISTA DE CORTE ==================== */
+function renderLista(){
+  const body = document.getElementById('listaBody');
+  const empty = document.getElementById('listaEmpty');
+  renderFiltroPerfiles();
+  if(orden.length===0){ body.innerHTML=''; empty.textContent='Todavía no agregaste ninguna abertura. Calculá una medida en la pestaña 1 y tocá "Agregar a lista de corte".'; empty.style.display='block'; return; }
+  let html='';
+  let algunaFila = false;
+  orden.forEach((item, idx)=>{
+    const filas = item.filas.filter(f=>!filtroPerfilesOcultos.has(f.perfil));
+    if(filas.length===0) return;
+    algunaFila = true;
+    filas.forEach((f,i)=>{
+      html += `<tr>
+        ${i===0?`<td rowspan="${filas.length}">${ventanaBadge(idx)}</td>`:''}
+        ${i===0?`<td rowspan="${filas.length}"><span class="badge ${item.linea}">${DATA[item.linea].nombre}</span></td>`:''}
+        ${i===0?`<td rowspan="${filas.length}">${colorLabel(item.color)}</td>`:''}
+        ${i===0?`<td rowspan="${filas.length}">${materialLabel(item.material)}</td>`:''}
+        ${i===0?`<td rowspan="${filas.length}">${item.tipoNombre}</td>`:''}
+        ${i===0?`<td rowspan="${filas.length}">A:${item.A} H:${item.H} x${item.cantAb}</td>`:''}
+        <td>${f.perfil}</td>
+        <td>${f.desc}</td>
+        <td><strong>${f.medida}</strong></td>
+        <td class="muted">${f.angulo}</td>
+        <td>${f.cantTotal}</td>
+        ${i===0?`<td rowspan="${filas.length}"><button class="danger no-print" onclick="quitarItem(${idx})">Quitar</button></td>`:''}
+      </tr>`;
+    });
+  });
+  empty.textContent = 'No hay piezas para mostrar con el filtro de perfiles actual.';
+  empty.style.display = algunaFila ? 'none' : 'block';
+  body.innerHTML = html;
+}
+function quitarItem(idx){
+  orden.splice(idx,1);
+  document.getElementById('listaCount').textContent = orden.length? '('+orden.length+')':'';
+  guardarOrdenActual();
+  renderLista();
+  renderResumenCalc();
+}
+function vaciarLista(){
+  if(confirm('¿Vaciar toda la lista de corte acumulada?')){
+    orden = [];
+    setObraActualId(null);
+    filtroPerfilesOcultos.clear();
+    document.getElementById('listaCount').textContent='';
+    guardarOrdenActual();
+    renderLista();
+    renderResumenCalc();
+  }
+}
+
+/* ==================== PERSISTENCIA DE LA LISTA ACTUAL ==================== */
+// Autoguardado de la lista de corte en curso, para que un refresh o cierre accidental
+// de la pestaña no la borre. Es distinto de "Obras guardadas" (abajo), que son
+// snapshots con nombre que elegís guardar vos a propósito para consultar después.
+function guardarOrdenActual(){
+  localStorage.setItem('sisObraOrden_v1', JSON.stringify(orden));
+  refrescarVidrios();
+  autoGuardarObra();
+}
+function cargarOrdenActual(){
+  try{
+    const raw = localStorage.getItem('sisObraOrden_v1');
+    orden = raw ? (JSON.parse(raw) || []) : [];
+  }catch(e){ orden = []; }
+}
+
+/* ==================== OBRAS GUARDADAS (compartidas via Firebase) ==================== */
+// Snapshots con nombre de la lista de corte completa (+ dirección) guardados en Firestore,
+// para que se vean iguales desde cualquier PC del taller — no en el navegador de cada uno.
+// obrasGuardadas se mantiene actualizado solo, en tiempo real, por el listener más abajo.
+// Sistema nuevo: misma base compartida que Control de ventas (proyecto aluwal-ventas), colecciones sis_*
+const firebaseConfig = {apiKey:"AIzaSyCshw1t7OXjTbg8ebvQzLn3VKxbY94cuRI",authDomain:"aluwal-ventas.firebaseapp.com",projectId:"aluwal-ventas",storageBucket:"aluwal-ventas.firebasestorage.app",messagingSenderId:"1016364782945",appId:"1:1016364782945:web:0eabc4b024666d6e5d2120"};
+firebase.initializeApp(firebaseConfig);
+// Colección compartida de obras del sistema.
+const OBRAS_COLECCION = 'sis_obras';
+const obrasCollection = firebase.firestore().collection(OBRAS_COLECCION);
+
+// Ventas (las carga y actualiza Control de ventas): acá solo se leen para mostrar el seguimiento
+let ventasPorNum = {};
+firebase.firestore().collection('sis_ventas').onSnapshot(snap=>{
+  ventasPorNum = {};
+  snap.forEach(d=>{ const v = d.data(); if(v.presupuesto) ventasPorNum[v.presupuesto] = v; });
+  if(typeof renderPres==='function') renderPres();
+});
+
+let obrasGuardadas = []; // [{id, nombre, direccion, fecha, orden}], id = id de documento en Firestore
+let obrasConectado = false;
+
+obrasCollection.onSnapshot(
+  snapshot=>{
+    obrasConectado = true;
+    obrasGuardadas = snapshot.docs.map(doc=>({id:doc.id, ...doc.data()}));
+    renderObrasGuardadas();
+  },
+  err=>{
+    console.error('Error conectando con Firebase:', err);
+    obrasConectado = false;
+    renderObrasGuardadas();
+  }
+);
+
+// Obra actual compartida: se guarda sola en la base común (la ve cualquiera que abra la app).
+// Si todas las aberturas vienen de UN presupuesto, la obra es una "venta" con id = ese número (B-XXXX);
+// si no, es una obra "a mano" con id propio.
+let obraActualId = null;
+try{ obraActualId = localStorage.getItem('aluwalObraActualId') || null; }catch(e){}
+let _autoGuardarTimer = null;
+function setObraActualId(id){
+  obraActualId = id;
+  try{ id ? localStorage.setItem('aluwalObraActualId', id) : localStorage.removeItem('aluwalObraActualId'); }catch(e){}
+}
+function datosObraActual(){
+  const nombre = document.getElementById('obraNombre').value.trim();
+  const direccion = document.getElementById('obraDireccion').value.trim();
+  const nums = [...new Set(orden.map(o=>o.presupuesto).filter(Boolean))];
+  let tipo = 'mano', presupuesto = null, id = obraActualId;
+  if(nums.length===1){ tipo = 'venta'; presupuesto = nums[0]; id = nums[0]; }
+  else if(!id || /^B-/.test(id)) id = 'm' + Date.now().toString(36);
+  return {id, nombre, direccion, tipo, presupuesto};
+}
+async function guardarObraCompartida(manual){
+  const d = datosObraActual();
+  const pill = document.getElementById('nubePill');
+  if(!orden.length){ if(manual) alert('No hay ninguna abertura cargada para guardar.'); return false; }
+  if(!d.nombre){ if(manual) alert('Ponele un nombre en el campo "Obra" para que se guarde.'); else if(pill) pill.textContent = '☁ Poné nombre a la obra'; return false; }
+  setObraActualId(d.id);
+  const previa = obrasGuardadas.find(o=>o.id===d.id);
+  if(!manual && previa && previa.nombre===d.nombre && (previa.direccion||'')===d.direccion && JSON.stringify(previa.orden)===JSON.stringify(orden)){
+    if(pill) pill.textContent = '☁ Guardado para todos'; return true; // sin cambios
+  }
+  try{
+    await obrasCollection.doc(d.id).set({nombre:d.nombre, direccion:d.direccion, fecha:new Date().toISOString(), tipo:d.tipo, presupuesto:d.presupuesto, orden:JSON.parse(JSON.stringify(orden))});
+    if(pill) pill.textContent = '☁ Guardado para todos';
+    if(manual) alert('Obra "'+d.nombre+'" guardada ('+orden.length+' abertura'+(orden.length>1?'s':'')+'). La ven todas las PC.');
+    return true;
+  }catch(err){
+    if(pill) pill.textContent = '☁ Sin conexión';
+    if(manual) alert('No se pudo guardar — revisá la conexión a internet. ('+err.message+')');
+    return false;
+  }
+}
+function autoGuardarObra(){ clearTimeout(_autoGuardarTimer); _autoGuardarTimer = setTimeout(()=>guardarObraCompartida(false), 1200); }
+function guardarObraActual(){ guardarObraCompartida(true); }
+function nuevaObraAMano(){
+  if(orden.length>0 && !confirm('Se va a vaciar la pantalla para empezar una obra nueva (la actual queda guardada). ¿Seguir?')) return;
+  orden = []; filtroPerfilesOcultos.clear();
+  document.getElementById('obraNombre').value = ''; document.getElementById('obraDireccion').value = '';
+  actualizarObra(); setObraActualId(null); guardarOrdenActual();
+  document.getElementById('listaCount').textContent = '';
+  renderResumenCalc(); irATab('calc'); document.getElementById('obraNombre').focus();
+}
+function cargarObraGuardada(id){
+  const o = obrasGuardadas.find(x=>x.id===id);
+  if(!o) return;
+  if(orden.length>0 && !confirm('Esto va a reemplazar la lista de corte actual (lo que no hayas guardado se pierde). ¿Seguir?')) return;
+  orden = JSON.parse(JSON.stringify(o.orden));
+  setObraActualId(o.id);
+  filtroPerfilesOcultos.clear();
+  document.getElementById('obraNombre').value = o.nombre;
+  document.getElementById('obraDireccion').value = o.direccion || '';
+  actualizarObra();
+  guardarOrdenActual();
+  document.getElementById('listaCount').textContent = orden.length? '('+orden.length+')':'';
+  renderResumenCalc();
+  renderLista();
+  irATab('vidrios');
+}
+function eliminarObraGuardada(id){
+  const o = obrasGuardadas.find(x=>x.id===id);
+  if(!o) return;
+  if(!confirm(`¿Eliminar la obra guardada "${o.nombre}"? No se puede deshacer, y se borra para todos.`)) return;
+  obrasCollection.doc(id).delete().catch(err=> alert('No se pudo eliminar — revisá la conexión. (' + err.message + ')'));
+}
+// Panel colapsable: arranca cerrado para no llenar la pantalla de chips — se abre al
+// tocar el título, y ahí adentro se puede buscar una obra puntual por nombre.
+let obrasGuardadasAbierto = false;
+function toggleObrasGuardadas(){
+  obrasGuardadasAbierto = !obrasGuardadasAbierto;
+  document.getElementById('obrasGuardadasPanel').style.display = obrasGuardadasAbierto ? 'block' : 'none';
+  renderObrasGuardadas();
+}
+function renderObrasGuardadas(){
+  if(typeof renderPres==='function') renderPres();
+  const label = document.getElementById('obrasGuardadasToggleLabel');
+  const cuenta = obrasGuardadas.length ? ` (${obrasGuardadas.length})` : '';
+  label.textContent = (obrasGuardadasAbierto ? '▾' : '▸') + ' Obras guardadas' + cuenta;
+
+  const box = document.getElementById('obrasGuardadasBox');
+  if(!obrasConectado){ box.innerHTML = '<span class="muted" style="font-size:12.5px;">Conectando con la base compartida...</span>'; return; }
+  if(obrasGuardadas.length===0){ box.innerHTML = '<span class="muted" style="font-size:12.5px;">Todavía no guardaste ninguna obra.</span>'; return; }
+
+  // Normaliza tildes para que buscar "perez" encuentre "Pérez" sin tener que escribir el acento.
+  const sinAcentos = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  const busqueda = sinAcentos(document.getElementById('obrasGuardadasBuscar').value.trim());
+  let visibles = busqueda ? obrasGuardadas.filter(o=>sinAcentos(o.nombre).includes(busqueda)) : obrasGuardadas;
+  if(visibles.length===0){ box.innerHTML = '<span class="muted" style="font-size:12.5px;">Ninguna obra coincide con la búsqueda.</span>'; return; }
+
+  const ordenadas = [...visibles].sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  box.innerHTML = ordenadas.map(o=>{
+    const fecha = new Date(o.fecha).toLocaleDateString('es-AR');
+    return `<span class="chip">📁 ${o.nombre} — ${fecha} (${o.orden.length})
+      <button onclick="cargarObraGuardada('${o.id}')" title="Cargar esta obra" style="color:var(--accent);">↩</button>
+      <button onclick="eliminarObraGuardada('${o.id}')" title="Eliminar">×</button>
+    </span>`;
+  }).join('');
+}
+
+/* ==================== STOCK ==================== */
+// Stock por línea+perfil+color: barras completas (6000mm) y retazos (largos sueltos que
+// quedaron de cortes anteriores). Vive en localStorage — persiste entre sesiones del navegador.
+let stock = {};
+function loadStock(){
+  try{
+    const raw = localStorage.getItem('sisObraStock_v1');
+    stock = raw ? JSON.parse(raw) : {};
+  }catch(e){ stock = {}; }
+}
+function saveStock(){
+  localStorage.setItem('sisObraStock_v1', JSON.stringify(stock));
+}
+function stockKey(linea, perfil, color, material){ return linea+'|'+perfil+'|'+color+'|'+material; }
+
+// Todos los perfiles distintos que aparecen en una línea, con una descripción de referencia
+// (la primera que se encuentra) — para poblar el selector de perfil en la pestaña Stock.
+function perfilesDeLinea(linea){
+  const map = {};
+  Object.values(DATA[linea].tipos).forEach(t=>{
+    t.piezas.forEach(p=>{
+      if(!map[p.perfil]) map[p.perfil] = p.desc;
+    });
+  });
+  return Object.keys(map).sort().map(perfil=>({perfil, desc:map[perfil]}));
+}
+function poblarPerfilesStock(){
+  const linea = document.getElementById('stockLinea').value;
+  const sel = document.getElementById('stockPerfil');
+  sel.innerHTML = perfilesDeLinea(linea).map(p=>`<option value="${p.perfil}">${p.perfil} — ${p.desc}</option>`).join('');
+}
+
+function addRetazoALista(retazos, largo, cant){
+  const existente = retazos.find(r=>r.largo===largo);
+  if(existente) existente.cant += cant;
+  else retazos.push({largo, cant});
+}
+
+function stockDesdeForm(){
+  const linea = document.getElementById('stockLinea').value;
+  const perfilSel = document.getElementById('stockPerfil');
+  const perfil = perfilSel.value;
+  const opt = perfilSel.options[perfilSel.selectedIndex];
+  const desc = opt ? opt.textContent.split(' — ').slice(1).join(' — ') : '';
+  const color = document.getElementById('stockColor').value;
+  const material = document.getElementById('stockMaterial').value;
+  return {linea, perfil, desc, color, material};
+}
+
+function agregarBarrasStock(){
+  const {linea, perfil, desc, color, material} = stockDesdeForm();
+  const cant = parseInt(document.getElementById('stockCantBarras').value)||0;
+  if(!perfil || cant<=0){ alert('Elegí un perfil y una cantidad de barras válida.'); return; }
+  const key = stockKey(linea, perfil, color, material);
+  if(!stock[key]) stock[key] = {linea, perfil, desc, color, material, barras:0, retazos:[]};
+  stock[key].barras += cant;
+  saveStock();
+  renderStockTab();
+  document.getElementById('stockCantBarras').value='';
+}
+
+function agregarRetazoStock(){
+  const {linea, perfil, desc, color, material} = stockDesdeForm();
+  const largo = parseInt(document.getElementById('stockLargoRetazo').value)||0;
+  const cant = parseInt(document.getElementById('stockCantRetazo').value)||1;
+  if(!perfil || largo<=0){ alert('Elegí un perfil y un largo de retazo válido.'); return; }
+  const key = stockKey(linea, perfil, color, material);
+  if(!stock[key]) stock[key] = {linea, perfil, desc, color, material, barras:0, retazos:[]};
+  addRetazoALista(stock[key].retazos, largo, cant);
+  saveStock();
+  renderStockTab();
+  document.getElementById('stockLargoRetazo').value='';
+  document.getElementById('stockCantRetazo').value='1';
+}
+
+function limpiarStockVacio(key){
+  if(stock[key] && stock[key].barras<=0 && stock[key].retazos.length===0) delete stock[key];
+}
+function quitarBarraStock(key){
+  if(!stock[key]) return;
+  stock[key].barras = Math.max(0, stock[key].barras-1);
+  limpiarStockVacio(key);
+  saveStock(); renderStockTab();
+}
+function quitarRetazoStock(key, largo){
+  if(!stock[key]) return;
+  const r = stock[key].retazos.find(r=>r.largo===largo);
+  if(r){ r.cant -= 1; if(r.cant<=0) stock[key].retazos = stock[key].retazos.filter(x=>x.largo!==largo); }
+  limpiarStockVacio(key);
+  saveStock(); renderStockTab();
+}
+function vaciarPerfilStock(key){
+  if(confirm('¿Vaciar todo el stock de este perfil/color?')){
+    delete stock[key];
+    saveStock(); renderStockTab();
+  }
+}
+
+function renderStockTab(){
+  const body = document.getElementById('stockBody');
+  const empty = document.getElementById('stockEmpty');
+  const keys = Object.keys(stock);
+  if(keys.length===0){ body.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  body.innerHTML = keys.sort().map(key=>{
+    const s = stock[key];
+    const retazosHtml = s.retazos.length
+      ? [...s.retazos].sort((a,b)=>a.largo-b.largo).map(r=>
+          `<span class="chip">${r.largo}mm ×${r.cant}<button class="no-print" onclick="quitarRetazoStock('${key}',${r.largo})" title="Quitar uno">×</button></span>`
+        ).join('')
+      : '<span class="muted">—</span>';
+    return `<tr>
+      <td><span class="badge ${s.linea}">${DATA[s.linea].nombre}</span></td>
+      <td>${s.perfil}</td>
+      <td>${s.desc}</td>
+      <td>${colorLabel(s.color)}</td>
+      <td>${materialLabel(s.material)}</td>
+      <td>${s.barras} <button class="ghost no-print" onclick="quitarBarraStock('${key}')" ${s.barras<=0?'disabled':''} style="padding:3px 8px;font-size:11.5px;">-1</button></td>
+      <td>${retazosHtml}</td>
+      <td><button class="danger no-print" onclick="vaciarPerfilStock('${key}')">Vaciar</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// Pestaña de Stock oculta por ahora (ver más arriba) — no se inicializa acá para no
+// depender de elementos del DOM que ya no existen. Las funciones siguen definidas por si
+// se reactiva en el futuro.
+
+/* ==================== OPTIMIZADOR DE BARRAS (First-Fit-Decreasing) ==================== */
+let ultimoStockPool = null; // snapshot de stock resultante del último plan, listo para "Confirmar corte"
+
+function optimizar(){
+  const largoBarra = parseFloat(document.getElementById('largoBarra').value)||6000;
+  const kerf = parseFloat(document.getElementById('kerf').value)||0;
+  const umbralRetazo = parseFloat(document.getElementById('umbralRetazo').value)||300;
+  const usarStock = false; // pestaña de stock oculta por ahora — ver funciones de stock más abajo, quedan listas para reactivar
+
+  if(orden.length===0){
+    document.getElementById('optimResults').innerHTML = '<div class="card"><p class="muted">No hay piezas cargadas. Agregá aberturas en la pestaña 1 y 2.</p></div>';
+    ultimoStockPool = null;
+    return;
+  }
+
+  // Copia de trabajo del stock real: se va consumiendo/reponiendo a medida que se arma
+  // el plan, pero recién se persiste si tocás "Confirmar corte".
+  const stockPool = usarStock ? JSON.parse(JSON.stringify(stock)) : {};
+
+  // Agrupar todas las piezas por (linea, perfil, color, material) — SIN la descripción:
+  // dos piezas de un mismo perfil (ej. jambas y zócalo de mosquitero, las dos en 6255) salen
+  // del mismo palo de aluminio, así que tienen que poder mezclarse en la misma barra al
+  // optimizar, aunque tengan nombres distintos. Cada pieza recuerda su descripción (para el
+  // tooltip) y de qué abertura viene (para pintarla con su color en el diagrama).
+  const grupos = {}; // key -> {linea, perfil, descs:Set, color, material, piezas:[{medida, desc, ordenIdx},...]}
+  orden.forEach((item, ordenIdx)=>{
+    const color = item.color || 'blanco';
+    const material = item.material || 'virgen';
+    item.filas.forEach(f=>{
+      if(filtroPerfilesOcultos.has(f.perfil)) return; // respeta el filtro de perfiles de la lista de corte
+      const key = item.linea+'|'+f.perfil+'|'+color+'|'+material;
+      if(!grupos[key]) grupos[key] = {linea:item.linea, perfil:f.perfil, descs:new Set(), color, material, piezas:[]};
+      grupos[key].descs.add(f.desc);
+      for(let i=0;i<f.cantTotal;i++) grupos[key].piezas.push({medida:f.medida, desc:f.desc, ordenIdx});
+    });
+  });
+
+  // Metros lineales totales de las VENTANAS de la obra: perímetro del marco (A+H)×2 de
+  // cada abertura (x cantidad de aberturas iguales) — no la suma de todas las piezas/perfiles.
+  let totalMLmm = 0;
+  orden.forEach(item=>{ totalMLmm += 2*(item.A+item.H)*item.cantAb; });
+
+  let totalBarras=0, totalDesperdicioMm=0, totalUsadoMm=0, totalCapacidadMm=0;
+  let totalBarrasNuevas=0, totalBarrasStock=0, totalRetazosStock=0;
+  const resultadosPorGrupo = [];
+
+  Object.values(grupos).forEach(g=>{
+    const skey = stockKey(g.linea, g.perfil, g.color, g.material);
+    const piezas = [...g.piezas].sort((a,b)=>b.medida-a.medida); // decreasing
+    const barras = []; // cada barra: {piezas:[], usado, capacidad, origen}
+
+    function abrirBinDesdeRetazo(medidaMin){
+      const pool = stockPool[skey];
+      if(!pool || !pool.retazos || pool.retazos.length===0) return null;
+      // Mejor ajuste: el retazo más chico que todavía alcance, para no "quemar" uno grande en una pieza chica.
+      let mejor = null;
+      pool.retazos.forEach(r=>{ if(r.largo>=medidaMin && r.cant>0 && (!mejor || r.largo<mejor.largo)) mejor = r; });
+      if(!mejor) return null;
+      mejor.cant -= 1;
+      pool.retazos = pool.retazos.filter(r=>r.cant>0);
+      return {capacidad:mejor.largo, origen:'retazo'};
+    }
+    function abrirBinDesdeBarraStock(){
+      const pool = stockPool[skey];
+      if(!pool || !pool.barras || pool.barras<=0) return null;
+      pool.barras -= 1;
+      return {capacidad:largoBarra, origen:'stock_barra'};
+    }
+
+    piezas.forEach(pieza=>{
+      let colocada=false;
+      for(const barra of barras){
+        const espacioNecesario = pieza.medida + (barra.piezas.length>0?kerf:0);
+        if(barra.usado + espacioNecesario <= barra.capacidad){
+          barra.piezas.push(pieza);
+          barra.usado += espacioNecesario;
+          colocada=true;
+          break;
+        }
+      }
+      if(!colocada){
+        let nuevoBin = usarStock ? abrirBinDesdeRetazo(pieza.medida) : null;
+        if(!nuevoBin) nuevoBin = usarStock ? abrirBinDesdeBarraStock() : null;
+        if(!nuevoBin) nuevoBin = {capacidad:largoBarra, origen:'nueva'};
+        barras.push({piezas:[pieza], usado:pieza.medida, capacidad:nuevoBin.capacidad, origen:nuevoBin.origen});
+      }
+    });
+
+    // Sobras aprovechables: vuelven al pool de trabajo (por si otro grupo del mismo
+    // perfil/color las puede usar en este mismo plan) y quedan anotadas para el stock final.
+    barras.forEach(b=>{
+      const sobra = b.capacidad - b.usado;
+      if(usarStock && sobra>=umbralRetazo){
+        if(!stockPool[skey]) stockPool[skey] = {linea:g.linea, perfil:g.perfil, desc:[...g.descs].join(' / '), color:g.color, material:g.material, barras:0, retazos:[]};
+        addRetazoALista(stockPool[skey].retazos, sobra, 1);
+      }
+    });
+
+    const usadoTotal = barras.reduce((s,b)=>s+b.usado,0);
+    const capacidadTotal = barras.reduce((s,b)=>s+b.capacidad,0);
+    const desperdicio = capacidadTotal - usadoTotal;
+    const nBarrasNuevas = barras.filter(b=>b.origen==='nueva').length;
+    const nBarrasStock = barras.filter(b=>b.origen==='stock_barra').length;
+    const nRetazos = barras.filter(b=>b.origen==='retazo').length;
+
+    totalBarras += barras.length;
+    totalDesperdicioMm += desperdicio;
+    totalUsadoMm += usadoTotal;
+    totalCapacidadMm += capacidadTotal;
+    totalBarrasNuevas += nBarrasNuevas;
+    totalBarrasStock += nBarrasStock;
+    totalRetazosStock += nRetazos;
+    resultadosPorGrupo.push({g, barras, usadoTotal, desperdicio, nBarrasNuevas, nBarrasStock, nRetazos});
+  });
+
+  ultimoStockPool = usarStock ? stockPool : null;
+
+  const pctDesperdicio = totalCapacidadMm>0 ? (totalDesperdicioMm/totalCapacidadMm*100).toFixed(1) : 0;
+
+  let legendHtml = `
+    <div class="card">
+      <h3 style="margin:0 0 10px;">Referencia de colores por abertura</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        ${orden.map((item,idx)=>`
+          <div class="legend-item">
+            ${ventanaBadge(idx)}
+            ${item.tipoNombre} A:${item.A}×H:${item.H} <span class="badge ${item.linea}">${DATA[item.linea].nombre}</span> ${colorLabel(item.color)} ${materialLabel(item.material)}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  let statsHtml = `
+    <div class="stat-grid">
+      <div class="card"><div class="stat">${(totalMLmm/1000).toFixed(1)} m</div><div class="stat-label">ML total de la obra</div></div>
+      <div class="card"><div class="stat">${totalBarras}</div><div class="stat-label">Barras totales</div></div>
+      <div class="card"><div class="stat">${(totalUsadoMm/1000).toFixed(1)} m</div><div class="stat-label">Material usado</div></div>
+      <div class="card"><div class="stat">${(totalDesperdicioMm/1000).toFixed(1)} m</div><div class="stat-label">Desperdicio</div></div>
+      <div class="card"><div class="stat">${pctDesperdicio}%</div><div class="stat-label">% desperdicio</div></div>
+      ${usarStock?`
+      <div class="card"><div class="stat">${totalRetazosStock}</div><div class="stat-label">Retazos de stock usados</div></div>
+      <div class="card"><div class="stat">${totalBarrasStock}</div><div class="stat-label">Barras de stock usadas</div></div>
+      <div class="card"><div class="stat">${totalBarrasNuevas}</div><div class="stat-label">Barras nuevas a cortar</div></div>
+      `:''}
+    </div>
+  `;
+
+  let confirmarHtml = usarStock ? `
+    <div class="card flex-between no-print">
+      <div class="muted">Esto va a descontar del stock las barras/retazos que se usaron acá y va a guardar las sobras nuevas (≥${umbralRetazo}mm) como retazos.</div>
+      <button class="primary" onclick="confirmarCorte()">✅ Confirmar corte y actualizar stock</button>
+    </div>
+  ` : '';
+
+  let gruposHtml = resultadosPorGrupo.map(({g,barras,usadoTotal,desperdicio,nBarrasNuevas,nBarrasStock,nRetazos})=>{
+    const barrasHtml = barras.map((b)=>{
+      const segs = b.piezas.map(pz=>{
+        const pct = (pz.medida/b.capacidad*100).toFixed(2);
+        const etiq = etiquetaOrden(pz.ordenIdx);
+        return `<div class="bar-seg" style="width:${pct}%;background:${colorForOrden(pz.ordenIdx)};" title="${etiq} — ${pz.desc} — ${pz.medida}mm">${etiq}·${pz.medida}</div>`;
+      }).join('');
+      const wastePct = ((b.capacidad-b.usado)/b.capacidad*100).toFixed(2);
+      const origenHtml = b.origen==='retazo' ? `<span class="badge stock-retazo">retazo stock ${b.capacidad}mm</span>`
+        : b.origen==='stock_barra' ? `<span class="badge stock-barra">barra stock</span>`
+        : `<span class="badge stock-nueva">barra nueva</span>`;
+      return `<div class="barra-row">
+        <div class="muted" style="font-size:11px;margin-bottom:2px;">${origenHtml}</div>
+        <div class="bar-diagram">${segs}<div class="bar-seg bar-waste" style="width:${wastePct}%">${b.capacidad-b.usado}mm</div></div>
+      </div>`;
+    }).join('');
+    const origenResumen = usarStock ? ` (${nBarrasNuevas} nueva, ${nBarrasStock} stock, ${nRetazos} retazo)` : '';
+    return `
+      <div class="card grupo-card">
+        <div class="flex-between grupo-header">
+          <div><strong>${g.perfil}</strong> — ${[...g.descs].join(' / ')} <span class="badge ${g.linea}">${DATA[g.linea].nombre}</span> ${colorLabel(g.color)} ${materialLabel(g.material)}</div>
+          <div class="muted">${barras.length} barra(s)${origenResumen} · ${g.piezas.length} piezas · desperdicio ${desperdicio}mm</div>
+        </div>
+        ${barrasHtml}
+      </div>
+    `;
+  }).join('');
+
+  const filtroHtml = filtroPerfilesOcultos.size>0
+    ? `<div class="warn-box no-print">Filtro de perfiles activo (pestaña "Lista de corte"): hay ${filtroPerfilesOcultos.size} perfil(es) oculto(s) y no se están optimizando acá.</div>`
+    : '';
+
+  // "pagebreak" fuerza que los perfiles empiecen en una hoja nueva al imprimir, separados
+  // del resumen (leyenda de colores + estadísticas), que queda solo en la primera hoja.
+  document.getElementById('optimResults').innerHTML = filtroHtml + legendHtml + statsHtml + confirmarHtml + '<div class="pagebreak"></div>' + gruposHtml;
+}
+
+function confirmarCorte(){
+  if(!ultimoStockPool){ alert('No hay un plan de corte con stock calculado. Tildá "Usar stock disponible" y volvé a optimizar.'); return; }
+  if(!confirm('Esto va a descontar el stock usado en este plan y guardar las sobras nuevas como retazos. ¿Confirmar?')) return;
+  stock = ultimoStockPool;
+  Object.keys(stock).forEach(k=>{
+    stock[k].retazos = stock[k].retazos.filter(r=>r.cant>0);
+    if(stock[k].barras<=0 && stock[k].retazos.length===0) delete stock[k];
+  });
+  saveStock();
+  renderStockTab();
+  alert('Stock actualizado.');
+}
+
+document.getElementById('largoBarra').addEventListener('input', e=>{
+  document.getElementById('stockPill').textContent = 'Barra estándar: '+(e.target.value||6000)+' mm';
+});
+
+/* ==================== IMPRESIÓN ==================== */
+// Se arma solo con el header de impresión (nombre + fecha + obra); el resto de lo que sale en
+// papel es lo que ya está visible en pantalla en la pestaña activa (nav y botones se
+// ocultan con la clase .no-print, ver @media print en el <style>).
+document.getElementById('printDate').textContent =
+  new Date().toLocaleDateString('es-AR') + ' ' + new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+
+// Etiquetas para pegar en cada perfil ya cortado: una línea por pieza física (si hay 2
+// iguales, salen 2 líneas), con la abertura (V1, V2...), la descripción y la medida —
+// para no perder de vista qué es cada pieza entre el corte y el armado.
+function imprimirEtiquetas(){
+  if(orden.length===0){ alert('No hay ninguna abertura cargada — agregá algo en la pestaña 1 primero.'); return; }
+  const box = document.getElementById('etiquetasPrint');
+  let html = '';
+  orden.forEach((item, idx)=>{
+    const etiqueta = etiquetaOrden(idx);
+    item.filas.forEach(f=>{
+      if(filtroPerfilesOcultos.has(f.perfil)) return;
+      for(let i=0;i<f.cantTotal;i++){
+        html += `<div class="etiqueta-row"><span class="etiqueta-dot" style="background:${colorForOrden(idx)};"></span><b>${etiqueta}</b> — ${f.desc} — <b>${f.medida}mm</b></div>`;
+      }
+    });
+  });
+  if(!html){ alert('No hay piezas para imprimir (¿tenés todos los perfiles ocultos con el filtro de la lista de corte?).'); return; }
+  box.innerHTML = html;
+  document.body.classList.add('modo-etiquetas');
+  window.print();
+}
+window.addEventListener('afterprint', ()=>{ document.body.classList.remove('modo-etiquetas'); document.body.classList.remove('modo-vidrios'); });
+
+// Datos de la obra (nombre + dirección) — quedan guardados en el navegador para no tener
+// que reescribirlos cada vez que abrís la app, y se muestran en el encabezado al imprimir.
+function actualizarObra(){
+  if(orden.length) autoGuardarObra();
+  const nombre = document.getElementById('obraNombre').value.trim();
+  const direccion = document.getElementById('obraDireccion').value.trim();
+  localStorage.setItem('sisObraNombre_v1', JSON.stringify({nombre, direccion}));
+  const partes = [nombre, direccion].filter(Boolean);
+  document.getElementById('printObra').textContent = partes.length ? 'Obra: ' + partes.join(' — ') : '';
+}
+(function cargarObra(){
+  try{
+    const raw = localStorage.getItem('sisObraNombre_v1');
+    if(raw){
+      const {nombre, direccion} = JSON.parse(raw);
+      document.getElementById('obraNombre').value = nombre || '';
+      document.getElementById('obraDireccion').value = direccion || '';
+    }
+  }catch(e){}
+  actualizarObra();
+})();
+
+/* ==================== VIDRIOS (calculador de vidrios DVH) ==================== */
+// Fórmulas por "línea|tipo" (mm). ancho/alto = medida de cada vidrio; cant = vidrios por abertura.
+// Solo están las combinaciones calibradas con medidas reales; el resto muestra "sin fórmula".
+const VIDRIO_FORMULAS = {
+  'modena|corrediza_dvh': (a,h)=>({ancho:a/2-73,  alto:h-165, cant:2}),   // Modena DVH 2 hojas
+  'modena|paño_fijo':     (a,h)=>({ancho:a-57,    alto:h-57,  cant:1}),   // Modena DVH paño fijo
+  'a30|corrediza':        (a,h)=>({ancho:a/2-100, alto:h-185, cant:2}),   // A30 DVH 2 hojas
+  'a30|corrediza_3h':     (a,h)=>({ancho:a/3-82,  alto:h-238, cant:3}),   // A30 DVH 3 hojas
+};
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// null = sin fórmula · {invalido:true} = medidas absurdas · si no, {ancho, alto, cant (total), porAbertura}
+function vidrioDe(item){
+  const f = VIDRIO_FORMULAS[item.linea+'|'+item.tipoKey];
+  if(!f) return null;
+  if(item.vidrioTipo && item.vidrioTipo!=='dvh') return null; // las fórmulas son solo para DVH
+  const v = f(item.A, item.H);
+  const ancho = Math.round(v.ancho), alto = Math.round(v.alto);
+  if(ancho<100 || alto<100) return {invalido:true};
+  return {ancho, alto, porAbertura:v.cant, cant:v.cant*(item.cantAb||1)};
+}
+// Metros lineales = perímetro de cada abertura x cantidad.
+function mlTotal(){
+  return orden.reduce((sum,it)=> sum + 2*(it.A+it.H)*(it.cantAb||1), 0) / 1000;
+}
+function refrescarVidrios(){
+  actualizarPresActual();
+  document.getElementById('mlPill').textContent = 'ML total obra: ' + mlTotal().toFixed(2) + ' mts';
+  renderVidrios();
+}
+function renderVidrios(){
+  const body = document.getElementById('vidriosBody');
+  document.getElementById('vidriosML').textContent = 'ML total obra: ' + mlTotal().toFixed(2) + ' mts';
+  document.getElementById('vidriosEmpty').style.display = orden.length ? 'none' : 'block';
+  const sin = [];
+  body.innerHTML = orden.map((it,idx)=>{
+    const v = vidrioDe(it);
+    let celda, cant = '—';
+    if(v && !v.invalido){ celda = `<td class="vidrio">${v.ancho} x ${v.alto} mm</td>`; cant = v.cant; }
+    else { celda = `<td class="muted">${v ? 'medidas inválidas' : 'sin fórmula'}</td>`; sin.push(etiquetaOrden(idx)); }
+    return `<tr>
+      <td>${ventanaBadge(idx)}</td>
+      <td>${esc(it.piso||'—')}</td>
+      <td>${esc(it.lado||'—')}</td>
+      <td>${esc(it.composicion||'—')}</td>
+      <td><span class="badge ${it.linea}">${DATA[it.linea].nombre}</span></td>
+      <td>${esc(it.tipoNombre)}</td>
+      <td>${it.A} x ${it.H}${it.cantAb>1?' ×'+it.cantAb:''}</td>
+      ${celda}
+      <td>${cant}</td>
+      <td style="max-width:220px;white-space:normal;overflow-wrap:break-word;">${esc(it.observacion||'')}</td>
+    </tr>`;
+  }).join('');
+  const box = document.getElementById('vidriosSinFormula');
+  if(sin.length){ box.style.display='block'; box.textContent = 'Sin fórmula de vidrio todavía (no salen en la planilla impresa): ' + sin.join(', '); }
+  else box.style.display='none';
+}
+// Imprime 2 hojas: 1) planilla completa, 2) medidas para el proveedor (ID, ancho, alto, composición, cant.)
+function imprimirVidrios(){
+  const filas = orden.map((it,idx)=>({it, idx, v:vidrioDe(it)})).filter(x=>x.v && !x.v.invalido);
+  if(filas.length===0){ alert('No hay ninguna abertura con fórmula de vidrio en la obra.'); return; }
+  const fecha = new Date().toLocaleDateString('es-AR');
+  const nombre = document.getElementById('obraNombre').value.trim();
+  const dir = document.getElementById('obraDireccion').value.trim();
+  const meta = (t)=>`<div class="vp-head"><div class="vp-brand">Aluwal Aberturas<small>${t}</small></div>
+    <div class="vp-meta">${nombre?'Obra: <b>'+esc(nombre)+'</b><br>':''}${dir?esc(dir)+'<br>':''}Fecha: ${fecha}</div></div>`;
+  const p1 = filas.map(({it,idx,v})=>`<tr><td>${esc(etiquetaOrden(idx))}</td><td>${esc(it.piso||'—')}</td><td>${esc(it.lado||'—')}</td>
+    <td>${esc(it.composicion||'—')}</td><td>${DATA[it.linea].nombre.replace(' (Aluar)','')}</td><td>${esc(it.tipoNombre)}</td>
+    <td>${it.A} x ${it.H}</td><td><b>${v.ancho} x ${v.alto}</b></td><td>${v.cant}</td><td>${esc(it.observacion||'')}</td></tr>`).join('');
+  const p2 = filas.map(({it,idx,v})=>`<tr><td>${esc(etiquetaOrden(idx))}</td><td>${v.ancho}</td><td>${v.alto}</td>
+    <td>${esc(it.composicion||'—')}</td><td>${v.cant}</td></tr>`).join('');
+  document.getElementById('vidriosPrint').innerHTML = `
+    <div>${meta('Planilla de vidrios — ML total obra: '+mlTotal().toFixed(2)+' mts')}
+      <table class="vp-grid"><thead><tr><th>ID</th><th>Piso</th><th>Lado</th><th>Composición</th><th>Línea</th><th>Tipo</th><th>Ventana (mm)</th><th>Vidrio (mm)</th><th>Cant.</th><th>Obs.</th></tr></thead><tbody>${p1}</tbody></table></div>
+    <div class="vp-page2">${meta('Medidas de vidrio — para proveedor')}
+      <table class="vp-grid"><thead><tr><th>ID</th><th>Ancho (mm)</th><th>Alto (mm)</th><th>Composición</th><th>Cant.</th></tr></thead><tbody>${p2}</tbody></table></div>`;
+  document.body.classList.add('modo-vidrios');
+  window.print();
+}
+
+/* ==================== TRAER PRESUPUESTO DEL HUB ==================== */
+// Lee los presupuestos guardados en el Hub (el mismo número B-XXXX que usan los presupuestadores)
+// y los convierte en aberturas de la obra: vidrios + cortes + optimizador.
+const HUB_URL = 'https://script.google.com/macros/s/AKfycby4xXecpdlxPP90XeMtweIc2yOF3RHxceSAnjmApcxj4PiAYQB_MKFBbnPJsOgo7rJP/exec';
+let presLista = [];
+
+// tipo del calculador a medida -> tipo de la tabla de cortes (según línea y vidrio). null = sin cortes cargados.
+const MAPA_TIPOS = {
+  pano:           ()=>'paño_fijo',
+  corrediza:      (l,v)=> l==='modena' ? (v==='dvh' ? 'corrediza_dvh' : 'corrediza') : 'corrediza',
+  corrediza3:     (l,v)=> l==='modena' ? (v==='dvh' ? 'corrediza_3h_dvh' : 'corrediza_3h') : 'corrediza_3h',
+  banderola:      (l)=> l==='modena' ? 'banderola' : null,
+  oscilobatiente: (l)=> l==='modena' ? 'doble_contacto' : 'abrir_oscilobatiente',
+  brazo:          ()=>'proyectante',
+};
+function tipoCortes(linea, tipo, vidrio){
+  const f = MAPA_TIPOS[tipo];
+  const k = f ? f(linea, vidrio) : null;
+  return (k && DATA[linea] && DATA[linea].tipos[k]) ? k : null;
+}
+function abrirPres(){ irATab('pres'); }
+function cerrarPres(){ /* ya no hay ventana: es una pestaña */ }
+async function cargarPres(){
+  const box = document.getElementById('presTabla');
+  if(!presLista.length){ try{ const c = JSON.parse(localStorage.getItem('sisPresCache')||'null'); if(c && c.length){ presLista = c; renderPres(); } }catch(e){} }
+  if(!presLista.length) box.innerHTML = '<div class="note">Cargando…</div>';
+  try{
+    const r = await fetch(HUB_URL+'?action=list&t='+Date.now(), {redirect:'follow'});
+    const d = await r.json();
+    if(!d.ok) throw new Error(d.error);
+    presLista = d.presupuestos || [];
+    try{ localStorage.setItem('sisPresCache', JSON.stringify(presLista)); }catch(e){}
+    renderPres();
+  }catch(e){ box.innerHTML = '<div class="warn-box">No se pudo conectar con el Hub ('+esc(e.message)+')</div>'; }
+}
+function segVenta(num){
+  const v = ventasPorNum[num];
+  if(!v) return '<span class="muted">—</span>';
+  const a = ['<span class="badge '+(v.estadoEntrega==='Entregado'?'stock-retazo':'stock-barra')+'">'+esc(v.estadoEntrega||'No entregado')+'</span>'];
+  if(v.medidas && v.medidas!=='No hace falta') a.push('📏 '+esc(String(v.medidas).replace('Sí — ',''))+(v.medidasFecha?' '+esc(v.medidasFecha):''));
+  if(v.produccion && v.produccion!=='No iniciada') a.push('🏭 '+esc(v.produccion));
+  if(v.instalacion==='Con instalación') a.push('🔧 instalación');
+  if(v.estadoPago) a.push('💰 '+esc(v.estadoPago));
+  return '<div style="font-size:12px;line-height:1.6">'+a.join('<br>')+'</div>';
+}
+function renderPres(){
+  const q = (document.getElementById('presBuscar').value||'').toLowerCase().trim();
+  const todos = document.getElementById('presTodos').checked;
+  const guardadas = {}; obrasGuardadas.forEach(o=>{ guardadas[o.id] = o; });
+  const fmtF = iso => { const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleDateString('es-AR')+' '+d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}); };
+
+  // ---- VENTAS: presupuestos del Hub + obras de venta ya guardadas ----
+  let l = presLista.filter(p => todos ? p.estado!=='reservado' : p.estado==='vendido');
+  const enHub = new Set(l.map(p=>p.num));
+  obrasGuardadas.filter(o=>o.tipo==='venta' && o.presupuesto && !enHub.has(o.presupuesto)).forEach(o=>{
+    l.push({num:o.presupuesto, fecha:o.fecha, cliente:o.nombre, dir:o.direccion, localidad:'', items:[], estado:'vendido', soloGuardada:true});
+  });
+  if(q) l = l.filter(p => (String(p.num)+' '+String(p.cliente)).toLowerCase().includes(q));
+  l = l.slice().sort((a,b)=>String(b.num).localeCompare(String(a.num)));
+  const box = document.getElementById('presTabla');
+  if(!l.length){ box.innerHTML = '<div class="note">'+(todos?'No hay presupuestos guardados.':'No hay presupuestos vendidos todavía (marcalos como vendidos en el presupuestador, o tildá "mostrar también no vendidos").')+'</div>'; }
+  else box.innerHTML = '<table><thead><tr><th>N°</th><th>Fecha</th><th>Cliente</th><th>Dirección</th><th>Aberturas</th><th>Estado</th><th>Seguimiento (Ventas)</th><th>Obra</th><th></th></tr></thead><tbody>'+
+    l.map(p=>{
+      const g = guardadas[p.num];
+      const ab = g ? (g.orden||[]).length : (p.items||[]).filter(it=>it.custom && it.ancho && it.alto).length;
+      const obra = g ? '<span class="badge stock-retazo">✓ guardada</span><div class="muted" style="font-size:11px;margin-top:2px;">'+esc(fmtF(g.fecha))+'</div>' : '<span class="muted">sin cargar</span>';
+      let acc = '';
+      if(g){
+        acc += '<button class="primary" onclick="cargarObraGuardada(\''+esc(g.id)+'\')">Abrir</button> ';
+        if(!p.soloGuardada) acc += '<button class="ghost" title="Volver a armarla desde el presupuesto (pisa lo guardado)" onclick="cargarPresupuestoAObra(\''+esc(p.num)+'\')">↻</button> ';
+        acc += '<button class="danger" title="Quitar de las obras guardadas" onclick="eliminarObraGuardada(\''+esc(g.id)+'\')">🗑</button>';
+      } else {
+        acc = '<button class="primary" '+(ab?'':'disabled style="opacity:.4"')+' onclick="cargarPresupuestoAObra(\''+esc(p.num)+'\')">Cargar a la obra</button>';
+      }
+      return '<tr><td data-l="N°"><b>'+esc(p.num)+'</b></td><td data-l="Fecha">'+esc(String(p.fecha||'').slice(0,10))+'</td><td data-l="Cliente">'+esc(p.cliente||'—')+'</td><td data-l="Dirección">'+esc([p.dir,p.localidad].filter(Boolean).join(', '))+'</td><td data-l="Aberturas">'+ab+'</td>'+
+        '<td data-l="Estado"><span class="badge '+(p.estado==='vendido'?'stock-retazo':'stock-barra')+'">'+esc(p.estado)+(p.vendedor?' · '+esc(p.vendedor):'')+'</span></td><td data-l="Seguimiento">'+segVenta(p.num)+'</td><td data-l="Obra">'+obra+'</td><td class="acc" data-l="" style="text-align:right;white-space:nowrap;">'+acc+'</td></tr>';
+    }).join('')+'</tbody></table>';
+
+  // ---- A MANO: obras guardadas que no vienen de un presupuesto ----
+  const mano = obrasGuardadas.filter(o=>o.tipo==='mano' || (!o.tipo && !/^B-/.test(o.id)))
+    .sort((a,b)=>String(b.fecha||'').localeCompare(String(a.fecha||'')));
+  const mbox = document.getElementById('manoTabla');
+  if(!obrasConectado) mbox.innerHTML = '<div class="note">Conectando con la base compartida…</div>';
+  else if(!mano.length) mbox.innerHTML = '<div class="note">Todavía no hay obras a mano. Tocá "＋ Nueva obra a mano", ponele nombre y cargá las aberturas en la pestaña "＋ Abertura a mano": se guarda sola.</div>';
+  else mbox.innerHTML = '<table><thead><tr><th>Obra</th><th>Dirección</th><th>Aberturas</th><th>Última modificación</th><th></th></tr></thead><tbody>'+
+    mano.map(o=>'<tr><td data-l="Obra"><b>'+esc(o.nombre||'(sin nombre)')+'</b></td><td data-l="Dirección">'+esc(o.direccion||'')+'</td><td data-l="Aberturas">'+((o.orden||[]).length)+'</td><td data-l="Modificada">'+esc(fmtF(o.fecha))+'</td>'+
+      '<td class="acc" data-l="" style="text-align:right;white-space:nowrap;"><button class="primary" onclick="cargarObraGuardada(\''+esc(o.id)+'\')">Abrir</button> <button class="danger" title="Eliminar para todos" onclick="eliminarObraGuardada(\''+esc(o.id)+'\')">🗑</button></td></tr>').join('')+'</tbody></table>';
+}
+function cargarPresupuestoAObra(num){
+  const p = presLista.find(x=>x.num===num);
+  if(!p) return;
+  if(orden.length>0){
+    const actual = document.getElementById('obraNombre').value.trim() || 'la obra actual';
+    const n = orden.length;
+    if(!confirm('Ahora tenés '+n+' abertura'+(n>1?'s':'')+' cargada'+(n>1?'s':'')+' ('+actual+').\n\nAl cargar '+num+' se va a REEMPLAZAR toda la lista.\n\nSi querés conservar la actual, cancelá y tocá primero "Guardar esta obra".\n\n¿Reemplazar?')) return;
+  }
+  const nuevas = [];
+  const material = document.getElementById('presMaterial').value;
+  const COLORES = ['blanco','negro','anodizado'];
+  let cargadas = 0, sinCortes = [];
+  (p.items||[]).forEach((it, i)=>{
+    if(!it.custom || !it.ancho || !it.alto) return; // solo aberturas a medida
+    const linea = it.linea==='a30' ? 'a30' : 'modena';
+    const tipoKey = tipoCortes(linea, it.tipo, it.vidrio);
+    const opc = new Set(it.opc || ['premarco','contramarco','mosquitero']); // sin dato: todo incluido, como en el formulario
+    const A = Number(it.ancho), H = Number(it.alto), cantAb = Number(it.cantidad)||1;
+    let filas = [], tipoNombre = it.descripcion || it.tipo;
+    if(tipoKey){
+      const t = DATA[linea].tipos[tipoKey];
+      tipoNombre = t.nombre;
+      filas = t.piezas.filter(pz=>{
+        const g = piezaGrupo(pz.desc);
+        if(g==='premarco' && !opc.has('premarco')) return false;
+        if(g==='tapa_premarco' && !opc.has('contramarco')) return false;
+        if(g==='mosquitero' && !opc.has('mosquitero')) return false;
+        return true;
+      }).map(pz=>({...pz, medida:evalFormula(pz.formula,A,H), cantTotal:pz.cant*cantAb}));
+    } else {
+      sinCortes.push((it.descripcion||it.tipo));
+    }
+    nuevas.push({
+      linea, tipoKey: tipoKey || ('sin_cortes_'+it.tipo), tipoNombre, A, H, cantAb,
+      color: COLORES.includes(it.color) ? it.color : 'blanco', material, filas,
+      etiqueta: String(num).replace(/^B-0*/,'') + '-V' + (i+1),
+      piso:'', lado:'Frente', composicion: it.vidrio==='dvh' ? '4/9/4' : '', vidrioTipo: it.vidrio||'',
+      observacion:'', presupuesto: num
+    });
+    cargadas++;
+  });
+  if(!cargadas){ alert('Ese presupuesto no tiene aberturas a medida para cargar.'); return; }
+  orden = nuevas;
+  const nom = document.getElementById('obraNombre'), dir = document.getElementById('obraDireccion');
+  nom.value = (p.cliente||'') + ' · ' + num;
+  dir.value = [p.dir,p.localidad].filter(Boolean).join(', ');
+  actualizarObra();
+  filtroPerfilesOcultos.clear();
+  setObraActualId(num);
+  guardarOrdenActual();
+  document.getElementById('listaCount').textContent = '('+orden.length+')';
+  renderResumenCalc();
+  cerrarPres();
+  irATab('vidrios');
+  alert('Se cargaron '+cargadas+' abertura'+(cargadas>1?'s':'')+' de '+num+'.' + (sinCortes.length ? '\n\nSin cortes cargados todavía (solo vidrio): '+sinCortes.join(', ') : ''));
+}
+
+function actualizarPresActual(){
+  const el = document.getElementById('presActual'); if(!el) return;
+  const n = orden.length, nom = document.getElementById('obraNombre').value.trim();
+  el.innerHTML = n
+    ? 'Obra cargada: <b>'+esc(nom||'sin nombre')+'</b> — '+n+' abertura'+(n>1?'s':'')+' &nbsp; <button class="ghost" style="padding:4px 10px" onclick="irATab(\'vidrios\')">Ver vidrios</button> <button class="ghost" style="padding:4px 10px" onclick="irATab(\'lista\')">Ver lista de corte</button>'
+    : 'Todavía no cargaste ninguna obra: elegí un presupuesto vendido.';
+}
+
+(function ocultarPanelViejo(){
+  const l = document.getElementById('obrasGuardadasToggleLabel'); if(!l) return;
+  const fb = l.closest('.flex-between'); if(!fb) return;
+  fb.style.display = 'none'; if(fb.previousElementSibling) fb.previousElementSibling.style.display = 'none';
+})();
+
+// Restaurar la lista de corte en curso (por si se cerró/refrescó sin guardar). Las obras
+// guardadas se cargan solas apenas conecta el listener de Firebase, más arriba.
+cargarOrdenActual();
+document.getElementById('listaCount').textContent = orden.length? '('+orden.length+')':'';
+renderResumenCalc();
+renderObrasGuardadas();
+refrescarVidrios();
+cargarPres();
+</script>
+<a href="../" id="sisHome" title="Inicio del sistema" style="position:fixed;left:10px;bottom:10px;z-index:99990;width:38px;height:38px;border-radius:50%;background:#161616;border:1px solid #c9a96e;color:#c9a96e;display:flex;align-items:center;justify-content:center;text-decoration:none;font:700 18px sans-serif;opacity:.85">&#8962;</a>
+<style>@media print{#sisHome{display:none!important}}</style>
+</body>
+</html>
