@@ -1246,7 +1246,7 @@ function renderObrasGuardadas(){
   const ordenadas = [...visibles].sort((a,b)=>b.fecha.localeCompare(a.fecha));
   box.innerHTML = ordenadas.map(o=>{
     const fecha = new Date(o.fecha).toLocaleDateString('es-AR');
-    return `<span class="chip">📁 ${o.nombre} — ${fecha} (${o.orden.length})
+    return `<span class="chip">📁 ${o.nombre} — ${fecha} (${(o.orden||[]).length})
       <button onclick="cargarObraGuardada('${o.id}')" title="Cargar esta obra" style="color:var(--accent);">↩</button>
       <button onclick="eliminarObraGuardada('${o.id}')" title="Eliminar">×</button>
     </span>`;
